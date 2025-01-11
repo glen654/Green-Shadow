@@ -5,10 +5,16 @@ import { Piechart } from "../components/Piechart";
 export function Dashboard() {
   return (
     <>
-      <h1 className="text-4xl font-bold mt-8 ml-10 mb-2">Dashboard</h1>
+      <h1>Dashboard</h1>
       <Cards />
-      <Barchart/>
-      <Piechart/>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full">
+          <Barchart />
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full">
+          <Piechart />
+        </div>
+      </div>
     </>
   );
 }

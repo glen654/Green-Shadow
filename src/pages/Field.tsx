@@ -1,5 +1,6 @@
 import { Addbutton } from "../components/Addbutton";
 import { Cards } from "../components/Cards";
+import field from "../assets/field.png";
 
 export function Field() {
   return (
@@ -32,8 +33,10 @@ export function Field() {
             </tr>
           </thead>
           <tbody className="bg-white">
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4">Image</td>
+            <tr className="hover:bg-gray-50 border-b border-gray-300">
+              <td className="px-6 py-4">
+                <img src={field} alt="" className="w-24 h-24 rounded-full" />
+              </td>
               <td className="px-6 py-4">Field 1</td>
               <td className="px-6 py-4">Location 1</td>
               <td className="px-6 py-4">Location 1</td>
@@ -53,8 +56,10 @@ export function Field() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4">Image</td>
+            <tr className="hover:bg-gray-50 border-b border-gray-300">
+              <td className="px-6 py-4">
+                <img src={field} alt="" className="w-24 h-24 rounded-full" />
+              </td>
               <td className="px-6 py-4">Field 2</td>
               <td className="px-6 py-4">Location 1</td>
               <td className="px-6 py-4">Location 1</td>
@@ -74,75 +79,14 @@ export function Field() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4">Image</td>
+            <tr className="hover:bg-gray-50 border-b border-gray-300">
+              <td className="px-6 py-4">
+                <img src={field} alt="" className="w-24 h-24 rounded-full" />
+              </td>
               <td className="px-6 py-4">Field 3</td>
               <td className="px-6 py-4">Location 1</td>
               <td className="px-6 py-4">Location 1</td>
               <td className="px-6 py-4">5000 sq. ft.</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4">Image</td>
-              <td className="px-6 py-4">Field 4</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">5000 sq. ft.</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4">Image</td>
-              <td className="px-6 py-4">Field 5</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">Location 2</td>
-              <td className="px-6 py-4">3000 sq. ft.</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4">Image</td>
-              <td className="px-6 py-4">Field 6</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">Location 2</td>
-              <td className="px-6 py-4">7500 sq. ft.</td>
               <td className="px-6 py-4">
                 <a
                   href="#"

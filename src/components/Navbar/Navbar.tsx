@@ -13,22 +13,22 @@ export function Navbar() {
               Dashboard
             </Link>
             <Link to="/field" className="custom-link">
-              Field
+              Field Details
             </Link>
             <Link to="/crop" className="custom-link">
-              Crop
+              Crop Details
             </Link>
             <Link to="/staff" className="custom-link">
-              Staff
+              Staff Details
             </Link>
             <Link to="/equipment" className="custom-link">
-              Equipment
+              Equipment Details
             </Link>
             <Link to="/log" className="custom-link">
-              Log
+              Log Detalls
             </Link>
             <Link to="/vehicle" className="custom-link">
-              Vehicle
+              Vehicle Details
             </Link>
           </ul>
         </nav>

@@ -10,6 +10,7 @@ export function Field() {
       <div className="flex justify-end mt-8 mr-56">
         <Addbutton>Field</Addbutton>
       </div>
+      {/* Field Table */}
       <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-16">
         <table className="w-full text-sm text-left rtl:text-right text-black">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">

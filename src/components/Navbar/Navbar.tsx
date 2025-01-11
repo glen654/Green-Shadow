@@ -5,7 +5,7 @@ import "./Navbar.css";
 export function Navbar() {
   return (
     <>
-      <header className="bg-green-500 shadow-lg">
+      <header className="bg-green-500 shadow-lg sticky top-0 z-50">
         <nav className="px-4 py-3">
           <ul className="flex text-white space-x-4">
             <h1 className="mt-1 text-xl mr-4 ">Green Shadow</h1>

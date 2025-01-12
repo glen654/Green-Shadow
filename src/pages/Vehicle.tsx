@@ -10,7 +10,7 @@ export function Vehicle() {
         <Addbutton>Vehicle</Addbutton>
       </div>
       {/* Vehicle Table */}
-      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-16">
+      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-28">
         <table className="w-full text-sm text-left rtl:text-right text-black">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -37,8 +37,8 @@ export function Vehicle() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white">
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+          <tbody className="bg-stone-300 cursor-pointer">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">XYZ-002</td>
               <td className="px-6 py-4">Truck</td>
               <td className="px-6 py-4">Diesel</td>
@@ -60,7 +60,7 @@ export function Vehicle() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">XYZ-002</td>
               <td className="px-6 py-4">Truck</td>
               <td className="px-6 py-4">Diesel</td>
@@ -82,7 +82,7 @@ export function Vehicle() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">XYZ-002</td>
               <td className="px-6 py-4">Truck</td>
               <td className="px-6 py-4">Diesel</td>
@@ -104,7 +104,7 @@ export function Vehicle() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">XYZ-002</td>
               <td className="px-6 py-4">Truck</td>
               <td className="px-6 py-4">Diesel</td>
@@ -126,7 +126,7 @@ export function Vehicle() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">XYZ-002</td>
               <td className="px-6 py-4">Truck</td>
               <td className="px-6 py-4">Diesel</td>

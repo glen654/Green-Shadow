@@ -1,17 +1,34 @@
 import { Addbutton } from "../components/Addbutton";
 import { Cards } from "../components/Cards";
 import field from "../assets/field.png";
+import { Modal } from "../components/Modal";
+import { useState } from "react";
 
 export function Field() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddField = () => {
+    setIsModalOpen(true); 
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); 
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Field added!");
+    setIsModalOpen(false);
+  };
   return (
     <>
       <h1>Field</h1>
       <Cards />
       <div className="flex justify-end mt-8 mr-56">
-        <Addbutton>Field</Addbutton>
+        <Addbutton onClick={handleAddField}>Field</Addbutton>
       </div>
       {/* Field Table */}
-      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-16">
+      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-28">
         <table className="w-full text-sm text-left rtl:text-right text-black">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -33,8 +50,8 @@ export function Field() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white">
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+          <tbody className="bg-stone-300 cursor-pointer">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">
                 <img src={field} alt="" className="w-24 h-24 rounded-full" />
               </td>
@@ -57,7 +74,7 @@ export function Field() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">
                 <img src={field} alt="" className="w-24 h-24 rounded-full" />
               </td>
@@ -80,7 +97,7 @@ export function Field() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-300">
+            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">
                 <img src={field} alt="" className="w-24 h-24 rounded-full" />
               </td>
@@ -106,6 +123,70 @@ export function Field() {
           </tbody>
         </table>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <h2 className="text-lg font-bold mb-4">Add New Field</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Field Image
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Field Name
+            </label>
+            <input
+              type="text"
+              required
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Field Location (X)
+            </label>
+            <input
+              type="text"
+              required
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Field Location (Y)
+            </label>
+            <input
+              type="text"
+              required
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Extent Size
+            </label>
+            <input
+              type="text"
+              required
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            >
+              Save Field
+            </button>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

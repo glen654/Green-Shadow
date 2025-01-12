@@ -26,13 +26,10 @@ export function Barchart() {
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl mt-4 mx-auto">
-          {/* Card Header */}
           <div className="mb-4">
             <h2 className="text-2xl font-semibold">Crops By Month</h2>
             <p className="text-sm text-gray-600">January - June 2025</p>
           </div>
-
-          {/* Card Content */}
           <div className="mb-6">
             <div className="relative">
               <BarChart
@@ -58,8 +55,6 @@ export function Barchart() {
               </BarChart>
             </div>
           </div>
-
-          {/* Card Footer */}
           <div className="text-sm text-gray-500">
             <div className="flex gap-2 font-medium">
               Increase up by 5.2% this month <TrendingUp className="h-4 w-4" />

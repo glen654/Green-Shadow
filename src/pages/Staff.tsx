@@ -1,26 +1,28 @@
 import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
-import { useState } from "react";
 import { Modal } from "../components/Modal";
 import { Savebutton } from "../components/Savebutton";
 import { Updatebutton } from "../components/Updatebutton";
 import { Calender } from "../components/Calender";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal, openModal } from "../reducers/ModalSlice";
 
 export function Staff() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const isModalOpen = useSelector((state) => state.modal.isModalOpen);
 
   const handleAddStaff = () => {
-    setIsModalOpen(true);
+    dispatch(openModal());
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    dispatch(closeModal());
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Staff added!");
-    setIsModalOpen(false);
+    dispatch(closeModal());
   };
   return (
     <>

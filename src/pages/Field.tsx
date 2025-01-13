@@ -3,6 +3,8 @@ import { Cards } from "../components/Cards";
 import field from "../assets/field.png";
 import { Modal } from "../components/Modal";
 import { useState } from "react";
+import { Savebutton } from "../components/Savebutton";
+import { Updatebutton } from "../components/Updatebutton";
 
 export function Field() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -146,6 +148,10 @@ export function Field() {
           <div className="mb-4">
             <label>Extent Size</label>
             <input type="text" required />
+          </div>
+          <div className="flex justify-end">
+            <Savebutton>Save Field</Savebutton>
+            <Updatebutton>Update Field</Updatebutton>
           </div>
         </form>
       </Modal>

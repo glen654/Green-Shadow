@@ -3,6 +3,8 @@ import { Addbutton } from "../components/Addbutton";
 import field from "../assets/field.png";
 import { Modal } from "../components/Modal";
 import { useState } from "react";
+import { Savebutton } from "../components/Savebutton";
+import { Updatebutton } from "../components/Updatebutton";
 
 export function Crop() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -157,6 +159,10 @@ export function Crop() {
           <div className="mb-4">
             <label>Field Details</label>
             <select name="" id=""></select>
+          </div>
+          <div className="flex justify-end">
+            <Savebutton>Save Crop</Savebutton>
+            <Updatebutton>Update Crop</Updatebutton>
           </div>
         </form>
       </Modal>

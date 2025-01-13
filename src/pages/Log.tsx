@@ -3,6 +3,8 @@ import { Addbutton } from "../components/Addbutton";
 import field from "../assets/field.png";
 import { Modal } from "../components/Modal";
 import { useState } from "react";
+import { Savebutton } from "../components/Savebutton";
+import { Updatebutton } from "../components/Updatebutton";
 
 export function Log() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -157,6 +159,10 @@ export function Log() {
           <div className="mb-4">
             <label>Relevant Staff Member</label>
             <select name="" id=""></select>
+          </div>
+          <div className="flex justify-end">
+            <Savebutton>Save Log</Savebutton>
+            <Updatebutton>Update Log</Updatebutton>
           </div>
         </form>
       </Modal>

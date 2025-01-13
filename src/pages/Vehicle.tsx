@@ -2,6 +2,8 @@ import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
 import { Modal } from "../components/Modal";
 import { useState } from "react";
+import { Savebutton } from "../components/Savebutton";
+import { Updatebutton } from "../components/Updatebutton";
 
 export function Vehicle() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -216,6 +218,10 @@ export function Vehicle() {
           <div className="mb-4">
             <label>Remarks</label>
             <textarea name="" id="" rows={3}></textarea>
+          </div>
+          <div className="flex justify-end">
+            <Savebutton>Save Vehicle</Savebutton>
+            <Updatebutton>Update Vehicle</Updatebutton>
           </div>
         </form>
       </Modal>

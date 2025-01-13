@@ -2,6 +2,8 @@ import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
 import { Modal } from "../components/Modal";
 import { useState } from "react";
+import { Savebutton } from "../components/Savebutton";
+import { Updatebutton } from "../components/Updatebutton";
 
 export function Equipment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -196,6 +198,10 @@ export function Equipment() {
           <div className="mb-4">
             <label>Relevant Staff Member</label>
             <select name="" id=""></select>
+          </div>
+          <div className="flex justify-end">
+            <Savebutton>Save Equipement</Savebutton>
+            <Updatebutton>Update Equipment</Updatebutton>
           </div>
         </form>
       </Modal>

@@ -2,6 +2,8 @@ import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
 import { useState } from "react";
 import { Modal } from "../components/Modal";
+import { Savebutton } from "../components/Savebutton";
+import { Updatebutton } from "../components/Updatebutton";
 
 export function Staff() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -257,6 +259,10 @@ export function Staff() {
               <option value="SCIENTIST">Scientist</option>
               <option value="FIELD_WORKER">Field Worker</option>
             </select>
+          </div>
+          <div className="flex justify-end">
+            <Savebutton>Save Staff Member</Savebutton>
+            <Updatebutton>Update Staff Member</Updatebutton>
           </div>
         </form>
       </Modal>

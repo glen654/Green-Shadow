@@ -65,8 +65,8 @@ export function Staff() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-stone-300 cursor-pointer">
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+          <tbody className="bg-slate-100 cursor-pointer">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Kamal Perera</td>
               <td className="px-6 py-4">Manager</td>
               <td className="px-6 py-4">Male</td>
@@ -91,7 +91,7 @@ export function Staff() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Nimal Perera</td>
               <td className="px-6 py-4">Manager</td>
               <td className="px-6 py-4">Male</td>
@@ -116,7 +116,7 @@ export function Staff() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Amal Perera</td>
               <td className="px-6 py-4">Manager</td>
               <td className="px-6 py-4">Male</td>
@@ -141,7 +141,7 @@ export function Staff() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Amal Perera</td>
               <td className="px-6 py-4">Manager</td>
               <td className="px-6 py-4">Male</td>
@@ -166,7 +166,7 @@ export function Staff() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Amal Perera</td>
               <td className="px-6 py-4">Manager</td>
               <td className="px-6 py-4">Male</td>

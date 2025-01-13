@@ -53,8 +53,8 @@ export function Equipment() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-stone-300 cursor-pointer">
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+          <tbody className="bg-slate-100 cursor-pointer">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Shovel</td>
               <td className="px-6 py-4">Mechanical</td>
               <td className="px-6 py-4">Available</td>
@@ -75,7 +75,7 @@ export function Equipment() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Shovel</td>
               <td className="px-6 py-4">Mechanical</td>
               <td className="px-6 py-4">Available</td>
@@ -96,7 +96,7 @@ export function Equipment() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Shovel</td>
               <td className="px-6 py-4">Mechanical</td>
               <td className="px-6 py-4">Available</td>
@@ -117,7 +117,7 @@ export function Equipment() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Shovel</td>
               <td className="px-6 py-4">Mechanical</td>
               <td className="px-6 py-4">Available</td>
@@ -138,7 +138,7 @@ export function Equipment() {
                 </a>
               </td>
             </tr>
-            <tr className="hover:bg-gray-50 border-b border-gray-950 font-bold">
+            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
               <td className="px-6 py-4">Shovel</td>
               <td className="px-6 py-4">Mechanical</td>
               <td className="px-6 py-4">Available</td>

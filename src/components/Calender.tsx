@@ -10,7 +10,7 @@ export function Calender() {
   };
   return (
     <>
-      <div className="shadow-lg">
+      <div className="shadow-lg bg-white rounded-md p-4 w-full h-full">
         <DatePicker
           selected={selectedDate}
           onChange={handleDateChange}

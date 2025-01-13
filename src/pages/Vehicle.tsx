@@ -1,13 +1,30 @@
 import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
+import { Modal } from "../components/Modal";
+import { useState } from "react";
 
 export function Vehicle() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddVehicle = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Vehicle added!");
+    setIsModalOpen(false);
+  };
   return (
     <>
       <h1>Vehicle</h1>
       <Cards />
       <div className="flex justify-end mt-8 mr-56">
-        <Addbutton>Vehicle</Addbutton>
+        <Addbutton onClick={handleAddVehicle}>Vehicle</Addbutton>
       </div>
       {/* Vehicle Table */}
       <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-28">
@@ -151,6 +168,57 @@ export function Vehicle() {
           </tbody>
         </table>
       </div>
+
+      {/* Add Equipment Modal */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <h2>Add New Vehicle</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label>License Plate Number</label>
+            <input type="text" required />
+          </div>
+          <div className="mb-4">
+            <label>Vehicle Category</label>
+            <select name="" id="">
+              <option value="" selected>
+                Select Vehicle Category
+              </option>
+              <option value="CAR">Car</option>
+              <option value="VAN">Van</option>
+              <option value="TRUCK">Truck</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label>Fuel Type</label>
+            <select name="" id="">
+              <option value="" selected>
+                Select Fuel Type
+              </option>
+              <option value="DIESEL">Diesel</option>
+              <option value="PETROL">Petrol</option>
+              <option value="ELECTRIC">Electric</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label>Vehicle Status</label>
+            <select name="" id="">
+              <option value="" selected>
+                Select Vehicle Status
+              </option>
+              <option value="AVAILABLE">Available</option>
+              <option value="UNAVAILABLE">Unavailable</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label>Relevant Staff Member</label>
+            <select name="" id=""></select>
+          </div>
+          <div className="mb-4">
+            <label>Remarks</label>
+            <textarea name="" id="" rows={3}></textarea>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

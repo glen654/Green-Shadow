@@ -1,14 +1,31 @@
 import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
 import field from "../assets/field.png";
+import { Modal } from "../components/Modal";
+import { useState } from "react";
 
 export function Log() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddLog = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Log added!");
+    setIsModalOpen(false);
+  };
   return (
     <>
       <h1>Log</h1>
       <Cards />
       <div className="flex justify-end mt-8 mr-56">
-        <Addbutton>Log</Addbutton>
+        <Addbutton onClick={handleAddLog}>Log</Addbutton>
       </div>
       {/* Log Table */}
       <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-28">
@@ -112,6 +129,37 @@ export function Log() {
           </tbody>
         </table>
       </div>
+
+      {/* Add Log Modal */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <h2>Add New Log</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label>Observed Image</label>
+            <input type="file" accept="image/*" />
+          </div>
+          <div className="mb-4">
+            <label>Log Date</label>
+            <input type="date" required />
+          </div>
+          <div className="mb-4">
+            <label>Log Details</label>
+            <textarea name="" id="" rows={3}></textarea>
+          </div>
+          <div className="mb-4">
+            <label>Relevant Field</label>
+            <select name="" id=""></select>
+          </div>
+          <div className="mb-4">
+            <label>Relevant Crop</label>
+            <select name="" id=""></select>
+          </div>
+          <div className="mb-4">
+            <label>Relevant Staff Member</label>
+            <select name="" id=""></select>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

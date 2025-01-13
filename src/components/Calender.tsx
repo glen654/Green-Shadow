@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export function Calender() {
-  const [selectedDate, setSelectedDate] = useState(new Date("2024-02-25"));
+  const [selectedDate, setSelectedDate] = useState(new Date("2025-01-13"));
 
   const handleDateChange = (date) => {
     setSelectedDate(date);

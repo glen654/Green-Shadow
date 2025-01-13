@@ -10,7 +10,7 @@ export function Navbar() {
         <nav className="px-4 py-3 flex items-center">
           <div className="flex items-center text-white space-x-4">
             <h1 className="mt-1 text-xl mr-6">Green Shadow</h1>
-            <Link to="/" className="custom-link">
+            <Link to="/dashboard" className="custom-link">
               Dashboard
             </Link>
             <Link to="/field" className="custom-link">

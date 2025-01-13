@@ -8,6 +8,7 @@ import { Staff } from "./pages/Staff";
 import { Equipment } from "./pages/Equipment";
 import { Log } from "./pages/Log";
 import { Vehicle } from "./pages/Vehicle";
+import { Login } from "./pages/Login";
 
 function App() {
   const routes = createBrowserRouter([
@@ -15,7 +16,8 @@ function App() {
       path: "",
       element: <RootLayout />,
       children: [
-        { path: "/", element: <Dashboard /> },
+        { path: "/", element: <Login /> },
+        { path: "/dashboard", element: <Dashboard /> },
         { path: "/field", element: <Field /> },
         { path: "/crop", element: <Crop /> },
         { path: "/staff", element: <Staff /> },

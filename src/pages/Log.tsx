@@ -5,6 +5,7 @@ import { Modal } from "../components/Modal";
 import { useState } from "react";
 import { Savebutton } from "../components/Savebutton";
 import { Updatebutton } from "../components/Updatebutton";
+import { Calender } from "../components/Calender";
 
 export function Log() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,12 +26,21 @@ export function Log() {
   return (
     <>
       <h1>Log</h1>
-      <Cards />
-      <div className="flex justify-end mt-8 mr-56">
+      <div className="flex flex-wrap gap-6">
+        <div className="flex-grow">
+          <Cards />
+        </div>
+        <div className="flex-shrink-0">
+          <div className="relative h-full mr-10">
+            <Calender />
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-end mt-4 mr-56">
         <Addbutton onClick={handleAddLog}>Log</Addbutton>
       </div>
       {/* Log Table */}
-      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-28">
+      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-6 ml-28">
         <table className="w-full text-sm text-left rtl:text-right text-black">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>

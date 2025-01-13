@@ -17,11 +17,9 @@ export function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="flex gap-6 mt-4">
-        <div className="flex-1">
-          <Barchart />
-        </div>
-        <div className="flex-1">
+      <div className="flex flex-col lg:flex-row gap-6">
+        <Barchart />
+        <div className="flex-1 w-full lg:w-1/2">
           <Piechart />
         </div>
       </div>

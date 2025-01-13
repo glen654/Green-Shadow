@@ -8,11 +8,11 @@ export function Field() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddField = () => {
-    setIsModalOpen(true); 
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); 
+    setIsModalOpen(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -123,67 +123,29 @@ export function Field() {
           </tbody>
         </table>
       </div>
-
+      {/* Add Field Modal */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <h2 className="text-lg font-bold mb-4">Add New Field</h2>
+        <h2>Add New Field</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Field Image
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            <label>Field Image</label>
+            <input type="file" accept="image/*" />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Field Name
-            </label>
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            <label>Field Name</label>
+            <input type="text" required />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Field Location (X)
-            </label>
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            <label>Field Location (X)</label>
+            <input type="text" required />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Field Location (Y)
-            </label>
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            <label>Field Location (Y)</label>
+            <input type="text" required />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Extent Size
-            </label>
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-            >
-              Save Field
-            </button>
+            <label>Extent Size</label>
+            <input type="text" required />
           </div>
         </form>
       </Modal>

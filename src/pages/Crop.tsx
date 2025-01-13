@@ -1,14 +1,31 @@
 import { Cards } from "../components/Cards";
 import { Addbutton } from "../components/Addbutton";
 import field from "../assets/field.png";
+import { Modal } from "../components/Modal";
+import { useState } from "react";
 
 export function Crop() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddCrop = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Crop added!");
+    setIsModalOpen(false);
+  };
   return (
     <>
       <h1>Crop</h1>
       <Cards />
       <div className="flex justify-end mt-8 mr-56">
-        <Addbutton>Crop</Addbutton>
+        <Addbutton onClick={handleAddCrop}>Crop</Addbutton>
       </div>
       {/* Crop Table */}
       <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-10 ml-28">
@@ -112,6 +129,37 @@ export function Crop() {
           </tbody>
         </table>
       </div>
+
+      {/* Add Crop Modal */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <h2>Add New Crop</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label>Crop Image</label>
+            <input type="file" accept="image/*" />
+          </div>
+          <div className="mb-4">
+            <label>Common Name</label>
+            <input type="text" required />
+          </div>
+          <div className="mb-4">
+            <label>Scientific Name</label>
+            <input type="text" required />
+          </div>
+          <div className="mb-4">
+            <label>Category</label>
+            <input type="text" required />
+          </div>
+          <div className="mb-4">
+            <label>Season</label>
+            <input type="text" required />
+          </div>
+          <div className="mb-4">
+            <label>Field Details</label>
+            <select name="" id=""></select>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

@@ -23,4 +23,20 @@
   h1 {
     @apply text-4xl font-bold mt-8 ml-10 mb-2;
   }
+
+  input {
+    @apply mt-1 block w-full py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm;
+  }
+
+  label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  h2 {
+    @apply text-xl font-bold mb-4;
+  }
+
+  select {
+    @apply mt-1 block w-full py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm;
+  }
 }

@@ -40,7 +40,6 @@ export function Piechart() {
     <>
       <div className="p-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Other content */}
           <div className="bg-white rounded-lg shadow-lg p-6 w-full">
             <div className="flex flex-col">
               <div className="items-center pb-0 mb-4">
@@ -51,7 +50,6 @@ export function Piechart() {
               </div>
               <div className="flex-1 pb-0 mx-auto aspect-square max-w-[700px] max-h-[400px] px-0">
                 <PieChart width={400} height={400}>
-                  {/* Tooltip from recharts */}
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "white",

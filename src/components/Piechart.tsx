@@ -10,13 +10,13 @@ const chartData = [
 ];
 export function Piechart() {
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow-lg p-6 w-full h-full lg:w-1/2 max-w-4xl ml-6">
+    <div className="flex flex-col bg-white rounded-lg shadow-lg p-6 w-full h-full lg:w-1/2 max-w-4xl">
       <div className="pb-4 mb-4 border-b border-gray-200">
         <h2 className="text-2xl font-semibold">Field-Staff Assignment</h2>
         <p className="text-sm text-gray-600">January - June 2024</p>
       </div>
       <div className="flex justify-center items-center">
-        <PieChart width={600} height={250}>
+        <PieChart width={400} height={250}>
           <Tooltip
             contentStyle={{
               backgroundColor: "white",

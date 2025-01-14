@@ -2,11 +2,18 @@ import { Barchart } from "../components/Barchart";
 import { Calender } from "../components/Calender";
 import { Cards } from "../components/Cards";
 import { Piechart } from "../components/Piechart";
+import { motion } from "motion/react";
 
 export function Dashboard() {
   return (
     <div className="p-6">
-      <h1>Dashboard</h1>
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Dashboard
+      </motion.h1>
       <div className="flex flex-wrap gap-6">
         <div className="flex-grow">
           <Cards />

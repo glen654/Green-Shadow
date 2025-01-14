@@ -1,3 +1,6 @@
+import { easeIn } from "motion";
+import { motion } from "motion/react";
+
 export function Modal({
   isOpen,
   onClose,
@@ -11,7 +14,12 @@ export function Modal({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.1, ease: easeIn }}
+      >
         <div className="bg-white rounded-lg p-6 w-[600px]">
           <button
             onClick={onClose}
@@ -21,7 +29,7 @@ export function Modal({
           </button>
           <div>{children}</div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

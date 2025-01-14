@@ -6,6 +6,8 @@ import { Updatebutton } from "../components/Updatebutton";
 import { Calender } from "../components/Calender";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../reducers/ModalSlice";
+import { motion } from "motion/react";
+import { easeIn } from "motion";
 
 export function Vehicle() {
   const dispatch = useDispatch();
@@ -26,7 +28,13 @@ export function Vehicle() {
   };
   return (
     <>
-      <h1>Vehicle</h1>
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Vehicle
+      </motion.h1>
       <div className="flex flex-wrap gap-6">
         <div className="flex-grow">
           <Cards />
@@ -41,7 +49,12 @@ export function Vehicle() {
         <Addbutton onClick={handleAddVehicle}>Vehicle</Addbutton>
       </div>
       {/* Vehicle Table */}
-      <div className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-6 ml-28">
+      <motion.div
+        className="relative overflow-x-auto w-5/6 shadow-md sm:rounded-lg mt-6 ml-28"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4, ease: easeIn }}
+      >
         <table className="w-full text-sm text-left rtl:text-right text-black">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -181,7 +194,7 @@ export function Vehicle() {
             </tr>
           </tbody>
         </table>
-      </div>
+      </motion.div>
 
       {/* Add Equipment Modal */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>

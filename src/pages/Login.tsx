@@ -22,7 +22,7 @@ export function Login() {
               name="email"
               type="email"
               required
-              className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none"
+              className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-green-500 pl-2 pr-8 py-3 outline-none"
               placeholder="Enter email"
             />
           </div>
@@ -35,7 +35,7 @@ export function Login() {
               name="password"
               type="password"
               required
-              className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none"
+              className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-green-500 pl-2 pr-8 py-3 outline-none"
               placeholder="Enter password"
             />
           </div>

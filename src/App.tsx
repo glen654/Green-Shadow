@@ -9,26 +9,29 @@ import { Equipment } from "./pages/Equipment";
 import { Log } from "./pages/Log";
 import { Vehicle } from "./pages/Vehicle";
 import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 
 function App() {
   const routes = createBrowserRouter([
     {
+      path: "/",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
       path: "",
+      element: <RootLayout />,
       children: [
-        { path: "/", element: <Login /> },
-        {
-          path: "",
-          element: <RootLayout />,
-          children: [
-            { path: "/dashboard", element: <Dashboard /> },
-            { path: "/field", element: <Field /> },
-            { path: "/crop", element: <Crop /> },
-            { path: "/staff", element: <Staff /> },
-            { path: "/equipment", element: <Equipment /> },
-            { path: "/log", element: <Log /> },
-            { path: "/vehicle", element: <Vehicle /> },
-          ],
-        },
+        { path: "/dashboard", element: <Dashboard /> },
+        { path: "/field", element: <Field /> },
+        { path: "/crop", element: <Crop /> },
+        { path: "/staff", element: <Staff /> },
+        { path: "/equipment", element: <Equipment /> },
+        { path: "/log", element: <Log /> },
+        { path: "/vehicle", element: <Vehicle /> },
       ],
     },
   ]);

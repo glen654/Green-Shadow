@@ -9,10 +9,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../reducers/ModalSlice";
 import { motion } from "motion/react";
 import { easeIn } from "motion";
+import { AppDispatch } from "../store/Store";
+import { useState } from "react";
+import { FieldModel } from "../models/Field";
+import { saveField } from "../reducers/FieldReducer";
 
 export function Field() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
+  const fields = useSelector((state) => state.field);
+
+  const [fieldImage, setFieldImage] = useState("");
+  const [fieldName, setFieldName] = useState("");
+  const [fieldLocation, setFieldLocation] = useState("");
+  const [extentSize, setExtentSize] = useState(0);
+
+  const handleAdd = () => {
+    if(!fieldImage || !fieldName || !fieldLocation || ! extentSize){
+      alert("All Fields are required!");
+      return;
+    }
+    const newField = new FieldModel(fieldImage,fieldName,fieldLocation,extentSize);
+    dispatch(saveField(newField));
+  }
 
   const handleAddField = () => {
     dispatch(openModal());

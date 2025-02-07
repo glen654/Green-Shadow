@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FieldModel } from "../models/Field";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const initialState: FieldModel[] = [];
 
@@ -54,4 +54,63 @@ export const deleteField = createAsyncThunk(
       console.log(error);
     }
   }
-);a
+);
+
+const fieldSlice = createSlice({
+  name: "Field",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(saveField.fulfilled, (state, action) => {
+        state.push(action.payload);
+      })
+      .addCase(saveField.rejected, (state, action) => {
+        console.error("Failed to save field", action.payload);
+      })
+      .addCase(saveField.pending, (state, acction) => {
+        console.error("Pending");
+      });
+    builder
+      .addCase(updateField.fulfilled, (state, action) => {
+        const index = state.findIndex(
+          (field) => field.fieldName === action.payload.fieldName
+        );
+        if (index !== -1) {
+          state[index] = action.payload;
+        }
+      })
+      .addCase(updateField.rejected, (state, action) => {
+        console.error("Failed to update field", action.payload);
+      })
+      .addCase(updateField.pending, (state, action) => {
+        console.error("Pending");
+      });
+    builder
+      .addCase(deleteField.fulfilled, (state, action) => {
+        return state.filter(
+          (field: FieldModel) => field.fieldName !== action.payload.fieldName
+        );
+      })
+      .addCase(deleteField.rejected, (state, action) => {
+        console.error("Failed to delete field", action.payload);
+      })
+      .addCase(deleteField.pending, (state, action) => {
+        console.error("Pending");
+      });
+    builder
+      .addCase(getAllFields.fulfilled, (state, action) => {
+        action.payload.map((field: FieldModel) => {
+          state.push(field);
+        });
+      })
+      .addCase(getAllFields.rejected, (state, action) => {
+        console.error("Failed to load Field data", action.payload);
+      })
+      .addCase(getAllFields.pending, (state, action) => {
+        console.error("Pending");
+      });
+  },
+});
+
+export default fieldSlice.reducer;

@@ -2,13 +2,13 @@ export class FieldModel {
   fieldName: string;
   location: string;
   extentSize: number;
-  fieldImage: string;
+  fieldImage: File | null;
 
   constructor(
     fieldName: string,
     location: string,
     extentSize: number,
-    fieldImage: string
+    fieldImage: File | null
   ) {
     this.fieldName = fieldName;
     this.location = location;

@@ -11,27 +11,32 @@ import { motion } from "motion/react";
 import { easeIn } from "motion";
 import { AppDispatch } from "../store/Store";
 import { useState } from "react";
-import { FieldModel } from "../models/Field";
 import { saveField } from "../reducers/FieldReducer";
+import { FieldModel } from "../models/Field";
 
 export function Field() {
   const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
   const fields = useSelector((state) => state.field);
 
-  const [fieldImage, setFieldImage] = useState("");
+  const [fieldImage, setFieldImage] = useState<File | null>(null);
   const [fieldName, setFieldName] = useState("");
-  const [fieldLocation, setFieldLocation] = useState("");
-  const [extentSize, setExtentSize] = useState(0);
+  const [location, setLocation] = useState("");
+  const [extentSize, setExtentSize] = useState<number>(0);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFieldImage(e.target.files[0]);
+    }
+  };
 
   const handleAdd = () => {
-    if(!fieldImage || !fieldName || !fieldLocation || ! extentSize){
+    if (!fieldImage || !fieldName || !location || !extentSize) {
       alert("All Fields are required!");
       return;
     }
-    const newField = new FieldModel(fieldImage,fieldName,fieldLocation,extentSize);
-    dispatch(saveField(newField));
-  }
+    console.log(fieldImage);
+  };
 
   const handleAddField = () => {
     dispatch(openModal());
@@ -83,10 +88,7 @@ export function Field() {
                 Field Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Field Location (X)
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Field Location (Y)
+                Field Location
               </th>
               <th scope="col" className="px-6 py-3">
                 Extent Size
@@ -175,26 +177,40 @@ export function Field() {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label>Field Image</label>
-            <input type="file" accept="image/*" />
+            <input type="file" accept="image/*" onChange={handleFileChange} />
           </div>
           <div className="mb-4">
             <label>Field Name</label>
-            <input type="text" required />
+            <input
+              type="text"
+              name="fieldName"
+              value={fieldName}
+              onChange={(e) => setFieldName(e.target.value)}
+              required
+            />
           </div>
           <div className="mb-4">
-            <label>Field Location (X)</label>
-            <input type="text" required />
-          </div>
-          <div className="mb-4">
-            <label>Field Location (Y)</label>
-            <input type="text" required />
+            <label>Field Location</label>
+            <input
+              type="text"
+              name="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Extent Size</label>
-            <input type="text" required />
+            <input
+              type="text"
+              name="extentSize"
+              value={extentSize}
+              onChange={(e) => setExtentSize(Number(e.target.value))}
+              required
+            />
           </div>
           <div className="flex justify-end">
-            <Savebutton>Save Field</Savebutton>
+            <Savebutton handleClick={handleAdd}>Save Field</Savebutton>
             <Updatebutton>Update Field</Updatebutton>
           </div>
         </form>

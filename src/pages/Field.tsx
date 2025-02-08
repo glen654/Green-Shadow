@@ -22,7 +22,7 @@ export function Field() {
   const [fieldImage, setFieldImage] = useState<File | null>(null);
   const [fieldName, setFieldName] = useState("");
   const [location, setLocation] = useState("");
-  const [extentSize, setExtentSize] = useState<number>(0);
+  const [extentSize, setExtentSize] = useState(0);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -35,7 +35,15 @@ export function Field() {
       alert("All Fields are required!");
       return;
     }
-    console.log(fieldImage);
+
+    const fieldData = new FieldModel(
+      fieldName,
+      location,
+      extentSize,
+      fieldImage
+    );
+
+    dispatch(saveField(fieldData));
   };
 
   const handleAddField = () => {

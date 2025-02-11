@@ -1,7 +1,6 @@
 import axios from "axios";
 import { FieldModel } from "../models/Field";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { form } from "motion/react-m";
 
 export const initialState: FieldModel[] = [];
 
@@ -36,7 +35,6 @@ export const saveField = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       });
-      // const response = await api.post("/add", field);
       return response.data;
     } catch (error) {
       return console.log(error);

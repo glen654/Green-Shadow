@@ -1,6 +1,5 @@
 import { Addbutton } from "../components/Addbutton";
 import { Cards } from "../components/Cards";
-import field from "../assets/field.png";
 import { Modal } from "../components/Modal";
 import { Savebutton } from "../components/Savebutton";
 import { Updatebutton } from "../components/Updatebutton";
@@ -10,8 +9,8 @@ import { closeModal, openModal } from "../reducers/ModalSlice";
 import { motion } from "motion/react";
 import { easeIn } from "motion";
 import { AppDispatch } from "../store/Store";
-import { useState } from "react";
-import { saveField } from "../reducers/FieldReducer";
+import { useEffect, useState } from "react";
+import { getAllFields, saveField } from "../reducers/FieldReducer";
 import { FieldModel } from "../models/Field";
 
 export function Field() {
@@ -25,9 +24,7 @@ export function Field() {
   const [extentSize, setExtentSize] = useState(0);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFieldImage(e.target.files[0]);
-    }
+    setFieldImage(e.target.files ? e.target.files[0] : null);
   };
 
   const handleAdd = () => {
@@ -46,6 +43,13 @@ export function Field() {
     dispatch(saveField(fieldData));
   };
 
+  const handleEdit = (field: FieldModel) => {
+    dispatch(openModal());
+    setFieldName(field.fieldName);
+    setLocation(field.location);
+    setExtentSize(field.extentSize);
+    setFieldImage(field.fieldImage);
+  };
   const handleAddField = () => {
     dispatch(openModal());
   };
@@ -59,6 +63,10 @@ export function Field() {
     console.log("Field added!");
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    dispatch(getAllFields());
+  }, [dispatch]);
   return (
     <>
       <motion.h1
@@ -107,75 +115,46 @@ export function Field() {
             </tr>
           </thead>
           <tbody className="bg-slate-100 cursor-pointer">
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">
-                <img src={field} alt="" className="w-24 h-24 rounded-full" />
-              </td>
-              <td className="px-6 py-4">Field 1</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">5000 sq. ft.</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
+            {fields
+              .filter(
+                (field: FieldModel, index, self) =>
+                  index ===
+                  self.findIndex(
+                    (f: FieldModel) => f.fieldName === field.fieldName
+                  )
+              )
+              .map((field: FieldModel) => (
+                <tr
+                  key={field.fieldName}
+                  className="hover:bg-slate-200 border-b border-gray-950 font-bold"
                 >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">
-                <img src={field} alt="" className="w-24 h-24 rounded-full" />
-              </td>
-              <td className="px-6 py-4">Field 2</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">5000 sq. ft.</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">
-                <img src={field} alt="" className="w-24 h-24 rounded-full" />
-              </td>
-              <td className="px-6 py-4">Field 3</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">Location 1</td>
-              <td className="px-6 py-4">5000 sq. ft.</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
+                  <td className="px-6 py-4">
+                    <img
+                      src={field.fieldImage}
+                      alt={field.fieldName}
+                      className="w-24 h-24 rounded-full"
+                    />
+                  </td>
+                  <td className="px-6 py-4">{field.fieldName}</td>
+                  <td className="px-6 py-4">{field.location}</td>
+                  <td className="px-6 py-4">{field.extentSize} sq. ft.</td>
+                  <td className="px-6 py-4">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline"
+                      onClick={() => handleEdit(field)}
+                    >
+                      Edit
+                    </a>
+                    <a
+                      href="#"
+                      className="font-medium text-red-600 hover:underline ml-2"
+                    >
+                      Remove
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </motion.div>

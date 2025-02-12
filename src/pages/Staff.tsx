@@ -8,10 +8,64 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../reducers/ModalSlice";
 import { motion } from "motion/react";
 import { easeIn } from "motion";
+import { AppDispatch } from "../store/Store";
+import { useEffect, useState } from "react";
+import { StaffModel } from "../models/Staff";
+import { saveStaff } from "../reducers/staffReducer";
+import { Gender } from "../models/enums/GenderType";
+import { getFieldNames } from "../reducers/FieldReducer";
+import { FieldModel } from "../models/Field";
 
 export function Staff() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
+  const staffMembers = useSelector((state) => state.staff);
+  const fields = useSelector((state) => state.field);
+
+  const [staff, setStaff] = useState({
+    name: "",
+    designation: "",
+    gender: "" as Gender | "",
+    joinedDate: "",
+    dob: "",
+    address: "",
+    contact: "",
+    email: "",
+    fieldName: "",
+  });
+
+  const handleAdd = () => {
+    if (
+      !staff.name ||
+      !staff.designation ||
+      !staff.gender ||
+      !staff.joinedDate ||
+      !staff.dob ||
+      !staff.address ||
+      !staff.contact ||
+      !staff.email ||
+      !staff.fieldName
+    ) {
+      alert("All fields are required");
+      return;
+    }
+
+    const joinedDateObj = new Date(staff.joinedDate);
+    const dobObj = new Date(staff.dob);
+
+    const newStaffMember = new StaffModel(
+      staff.name,
+      staff.designation,
+      staff.gender,
+      joinedDateObj,
+      dobObj,
+      staff.address,
+      staff.contact,
+      staff.email,
+      staff.fieldName
+    );
+    dispatch(saveStaff(newStaffMember));
+  };
 
   const handleAddStaff = () => {
     dispatch(openModal());
@@ -26,6 +80,10 @@ export function Staff() {
     console.log("Staff added!");
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    dispatch(getFieldNames());
+  }, [dispatch]);
   return (
     <>
       <motion.h1
@@ -36,6 +94,7 @@ export function Staff() {
         Staff
       </motion.h1>
       <div className="flex flex-wrap gap-6">
+        ;
         <div className="flex-grow">
           <Cards />
         </div>
@@ -225,68 +284,111 @@ export function Staff() {
         <h2>Add New Staff Member</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label>First Name</label>
-            <input type="text" required />
-          </div>
-          <div className="mb-4">
-            <label>Last Name</label>
-            <input type="text" required />
+            <label>Name</label>
+            <input
+              type="text"
+              value={staff.name}
+              onChange={(e) => setStaff({ ...staff, name: e.target.value })}
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Designation</label>
-            <select name="" id="">
-              <option value="" selected>
-                Select a Designation
-              </option>
-              <option value="ADMINISTRATIVE">Administrative</option>
-              <option value="MANAGER">Manager</option>
-              <option value="SCIENTIST">Scientist</option>
-              <option value="FIELD_WORKER">Field Worker</option>
-            </select>
+            <input
+              type="text"
+              value={staff.designation}
+              onChange={(e) =>
+                setStaff({ ...staff, designation: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Gender</label>
-            <select name="" id="">
-              <option value="MALE" selected>
-                Male
+            <select
+              name="gender"
+              id=""
+              value={staff.gender}
+              onChange={(e) =>
+                setStaff({ ...staff, gender: e.target.value as Gender })
+              }
+            >
+              <option value="" selected>
+                Select Gender
               </option>
-              <option value="FEMALE">Female</option>
+              <option value={Gender.MALE}> Male</option>
+              <option value={Gender.FEMALE}>Female</option>
             </select>
           </div>
           <div className="mb-4">
             <label>Joined Date</label>
-            <input type="date" required />
+            <input
+              type="date"
+              name="joinedDate"
+              value={staff.joinedDate}
+              onChange={(e) =>
+                setStaff({ ...staff, joinedDate: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Date of Birth</label>
-            <input type="date" required />
+            <input
+              type="date"
+              name="Dob"
+              value={staff.dob}
+              onChange={(e) => setStaff({ ...staff, dob: e.target.value })}
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Address</label>
-            <input type="text" required />
+            <input
+              type="text"
+              value={staff.address}
+              onChange={(e) => setStaff({ ...staff, address: e.target.value })}
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Contact No</label>
-            <input type="text" required />
+            <input
+              type="text"
+              value={staff.contact}
+              onChange={(e) => setStaff({ ...staff, contact: e.target.value })}
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Email</label>
-            <input type="email" required />
+            <input
+              type="email"
+              value={staff.email}
+              onChange={(e) => setStaff({ ...staff, email: e.target.value })}
+              required
+            />
           </div>
           <div className="mb-4">
-            <label>Role</label>
-            <select name="" id="">
-              <option value="" selected>
-                Select a Role
-              </option>
-              <option value="ADMINISTRATIVE">Administrative</option>
-              <option value="MANAGER">Manager</option>
-              <option value="SCIENTIST">Scientist</option>
-              <option value="FIELD_WORKER">Field Worker</option>
+            <label>Field Name</label>
+            <select
+              name="fieldName"
+              value={staff.fieldName}
+              onChange={(e) =>
+                setStaff({ ...staff, fieldName: e.target.value })
+              }
+              required
+            >
+              <option value="">Select Field</option>
+              {fields.map((field: FieldModel) => (
+                <option key={`field-${field.fieldName}`} value={field.fieldName}>
+                  {field.fieldName}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex justify-end">
-            <Savebutton>Save Staff Member</Savebutton>
+            <Savebutton handleClick={handleAdd}>Save Staff Member</Savebutton>
             <Updatebutton>Update Staff Member</Updatebutton>
           </div>
         </form>

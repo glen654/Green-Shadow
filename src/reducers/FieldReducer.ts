@@ -17,6 +17,19 @@ export const getAllFields = createAsyncThunk("field/getFields", async () => {
   }
 });
 
+export const getFieldNames = createAsyncThunk(
+  "field/getFieldNames",
+  async () => {
+    try {
+      const response = await api.get("/fields");
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const saveField = createAsyncThunk(
   "field/saveField",
   async (field: FieldModel) => {
@@ -121,6 +134,18 @@ const fieldSlice = createSlice({
         console.error("Failed to load Field data", action.payload);
       })
       .addCase(getAllFields.pending, (state, action) => {
+        console.error("Pending");
+      });
+    builder
+      .addCase(getFieldNames.fulfilled, (state, action) => {
+        action.payload.map((field: FieldModel) => {
+          state.push(field);
+        });
+      })
+      .addCase(getFieldNames.rejected, (state, action) => {
+        console.error("Failed to load field names", action.payload);
+      })
+      .addCase(getFieldNames.pending, (state, action) => {
         console.error("Pending");
       });
   },

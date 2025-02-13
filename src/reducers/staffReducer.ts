@@ -5,7 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const initialState: StaffModel[] = [];
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/field",
+  baseURL: "http://localhost:3000/staff",
 });
 
 export const getAllStaff = createAsyncThunk("staff/getStaff", async () => {

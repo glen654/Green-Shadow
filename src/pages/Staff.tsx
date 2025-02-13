@@ -11,7 +11,7 @@ import { easeIn } from "motion";
 import { AppDispatch } from "../store/Store";
 import { useEffect, useState } from "react";
 import { StaffModel } from "../models/Staff";
-import { saveStaff } from "../reducers/staffReducer";
+import { deleteStaff, getAllStaff, saveStaff, updateStaff } from "../reducers/staffReducer";
 import { Gender } from "../models/enums/GenderType";
 import { getFieldNames } from "../reducers/FieldReducer";
 import { FieldModel } from "../models/Field";
@@ -22,7 +22,7 @@ export function Staff() {
   const staffMembers = useSelector((state) => state.staff);
   const fields = useSelector((state) => state.field);
 
-  const [staff, setStaff] = useState({
+  const initialStaffState = {
     name: "",
     designation: "",
     gender: "" as Gender | "",
@@ -32,9 +32,11 @@ export function Staff() {
     contact: "",
     email: "",
     fieldName: "",
-  });
+  };
 
-  const handleAdd = () => {
+  const [staff, setStaff] = useState(initialStaffState);
+
+  const handleAddNewStaff = () => {
     if (
       !staff.name ||
       !staff.designation ||
@@ -65,6 +67,61 @@ export function Staff() {
       staff.fieldName
     );
     dispatch(saveStaff(newStaffMember));
+    resetForm();
+    dispatch(getAllStaff());
+  };
+
+  const handleUpdateStaff = () => {
+    if (
+      !staff.name ||
+      !staff.designation ||
+      !staff.gender ||
+      !staff.joinedDate ||
+      !staff.dob ||
+      !staff.address ||
+      !staff.contact ||
+      !staff.email ||
+      !staff.fieldName
+    ) {
+      alert("All fields are required");
+      return;
+    }
+
+    const joinedDateObj = new Date(staff.joinedDate);
+    const dobObj = new Date(staff.dob);
+
+    const updatedStaffMember = new StaffModel(
+      staff.name,
+      staff.designation,
+      staff.gender,
+      joinedDateObj,
+      dobObj,
+      staff.address,
+      staff.contact,
+      staff.email,
+      staff.fieldName
+    );
+
+    dispatch(updateStaff({ name: staff.name, staff: updatedStaffMember }));
+    resetForm();
+    dispatch(closeModal());
+    dispatch(getAllStaff());
+  };
+
+  const handleDelete = (name: string) => {
+    if(window.confirm("Are you sure want to delete this staff memeber")){
+      dispatch(deleteStaff(name));
+      dispatch(getAllStaff());
+    }
+  }
+
+  const resetForm = () => {
+    setStaff(initialStaffState);
+  };
+
+  const handleEdit = (staff: StaffModel) => {
+    dispatch(openModal());
+    setStaff(staff);
   };
 
   const handleAddStaff = () => {
@@ -83,7 +140,9 @@ export function Staff() {
 
   useEffect(() => {
     dispatch(getFieldNames());
-  }, [dispatch]);
+    dispatch(getAllStaff());
+  }, [dispatch, staffMembers]);
+
   return (
     <>
       <motion.h1
@@ -142,7 +201,7 @@ export function Staff() {
                 Email
               </th>
               <th scope="col" className="px-6 py-3">
-                Role
+                Field Name
               </th>
               <th scope="col" className="px-6 py-3">
                 Actions
@@ -150,131 +209,47 @@ export function Staff() {
             </tr>
           </thead>
           <tbody className="bg-slate-100 cursor-pointer">
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">Kamal Perera</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">Male</td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">1992-05-23</td>
-              <td className="px-6 py-4">Panadura</td>
-              <td className="px-6 py-4">0778543231</td>
-              <td className="px-6 py-4">kamal@gmail.com</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
+            {staffMembers
+              .filter(
+                (staff: StaffModel, index, self) =>
+                  index === self.findIndex((s: StaffModel) => s.name === s.name)
+              )
+              .map((staff: StaffModel) => (
+                <tr
+                  key={staff.name}
+                  className="hover:bg-slate-200 border-b border-gray-950 font-bold"
                 >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">Nimal Perera</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">Male</td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">1992-05-23</td>
-              <td className="px-6 py-4">Panadura</td>
-              <td className="px-6 py-4">0778543231</td>
-              <td className="px-6 py-4">kamal@gmail.com</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">Amal Perera</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">Male</td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">1992-05-23</td>
-              <td className="px-6 py-4">Panadura</td>
-              <td className="px-6 py-4">0778543231</td>
-              <td className="px-6 py-4">kamal@gmail.com</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">Amal Perera</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">Male</td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">1992-05-23</td>
-              <td className="px-6 py-4">Panadura</td>
-              <td className="px-6 py-4">0778543231</td>
-              <td className="px-6 py-4">kamal@gmail.com</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">Amal Perera</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">Male</td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">1992-05-23</td>
-              <td className="px-6 py-4">Panadura</td>
-              <td className="px-6 py-4">0778543231</td>
-              <td className="px-6 py-4">kamal@gmail.com</td>
-              <td className="px-6 py-4">Manager</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
+                  <td className="px-6 py-4">{staff.name}</td>
+                  <td className="px-6 py-4">{staff.designation}</td>
+                  <td className="px-6 py-4">{staff.gender}</td>
+                  <td className="px-6 py-4">
+                    {new Date(staff.joinedDate).toLocaleDateString("en-GB")}
+                  </td>
+                  <td className="px-6 py-4">
+                    {new Date(staff.dob).toLocaleDateString("en-GB")}
+                  </td>
+                  <td className="px-6 py-4">{staff.address}</td>
+                  <td className="px-6 py-4">{staff.contact}</td>
+                  <td className="px-6 py-4">{staff.email}</td>
+                  <td className="px-6 py-4">{staff.fieldName}</td>
+                  <td className="px-6 py-4">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline"
+                      onClick={() => handleEdit(staff)}
+                    >
+                      Edit
+                    </a>
+                    <a
+                      href="#"
+                      className="font-medium text-red-600 hover:underline ml-2"
+                      onClick={() => handleDelete(staff.name)}
+                    >
+                      Remove
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </motion.div>
@@ -380,16 +355,20 @@ export function Staff() {
               required
             >
               <option value="">Select Field</option>
-              {fields.map((field: FieldModel) => (
-                <option key={`field-${field.fieldName}`} value={field.fieldName}>
-                  {field.fieldName}
+              {fields.map((field: FieldModel, index) => (
+                <option key={index} value={field}>
+                  {field}
                 </option>
               ))}
             </select>
           </div>
           <div className="flex justify-end">
-            <Savebutton handleClick={handleAdd}>Save Staff Member</Savebutton>
-            <Updatebutton>Update Staff Member</Updatebutton>
+            <Savebutton handleClick={handleAddNewStaff}>
+              Save Staff Member
+            </Savebutton>
+            <Updatebutton handleClick={handleUpdateStaff}>
+              Update Staff Member
+            </Updatebutton>
           </div>
         </form>
       </Modal>

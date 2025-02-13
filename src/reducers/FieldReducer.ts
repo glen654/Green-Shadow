@@ -22,7 +22,7 @@ export const getFieldNames = createAsyncThunk(
   async () => {
     try {
       const response = await api.get("/fields");
-
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -138,9 +138,7 @@ const fieldSlice = createSlice({
       });
     builder
       .addCase(getFieldNames.fulfilled, (state, action) => {
-        action.payload.map((field: FieldModel) => {
-          state.push(field);
-        });
+        return action.payload;
       })
       .addCase(getFieldNames.rejected, (state, action) => {
         console.error("Failed to load field names", action.payload);

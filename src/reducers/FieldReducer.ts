@@ -22,7 +22,6 @@ export const getFieldNames = createAsyncThunk(
   async () => {
     try {
       const response = await api.get("/fields");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);

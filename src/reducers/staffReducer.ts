@@ -17,6 +17,18 @@ export const getAllStaff = createAsyncThunk("staff/getStaff", async () => {
   }
 });
 
+export const getStaffNames = createAsyncThunk(
+  "staff/getStaffNames",
+  async () => {
+    try {
+      const response = await api.get("/staff");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const saveStaff = createAsyncThunk(
   "staff/saveStaff",
   async (staff: StaffModel) => {
@@ -106,6 +118,16 @@ const staffSlice = createSlice({
       })
       .addCase(getAllStaff.pending, (state, action) => {
         console.error("Pending load staff");
+      });
+    builder
+      .addCase(getStaffNames.fulfilled, (state, action) => {
+        return action.payload;
+      })
+      .addCase(getStaffNames.rejected, (state, action) => {
+        console.error("Failed to load staff names", action.payload);
+      })
+      .addCase(getStaffNames.pending, (state, action) => {
+        console.error("Pending");
       });
   },
 });

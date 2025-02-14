@@ -8,10 +8,93 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../reducers/ModalSlice";
 import { motion } from "motion/react";
 import { easeIn } from "motion";
+import { FuelType } from "../models/enums/FuelType";
+import { Status } from "../models/enums/StatusType";
+import { useState } from "react";
+import { VehicleModel } from "../models/Vehicle";
+import { deleteVehicle, getAllVehicles, saveVehicle, updateVehicle } from "../reducers/VehicleReducer";
 
 export function Vehicle() {
   const dispatch = useDispatch();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
+  const vehicles = useSelector((state) => state.vehicle);
+  const staffMembers = useSelector((state) => state.staff);
+
+  const initialVehicleState = {
+    licensePlateNumber: "",
+    category: "",
+    fuelType: "" as FuelType | "",
+    status: "" as Status | "",
+    remarks: "",
+    staffMember: "",
+  };
+
+  const [vehicle, setVehicle] = useState(initialVehicleState);
+
+  const handleAddNewVehicle = () => {
+    if (
+      !vehicle.licensePlateNumber ||
+      !vehicle.category ||
+      !vehicle.fuelType ||
+      !vehicle.status ||
+      !vehicle.remarks ||
+      !vehicle.staffMember
+    ) {
+      alert("All Fields are required!");
+      return;
+    }
+
+    const newVehicle = new VehicleModel(
+      vehicle.licensePlateNumber,
+      vehicle.category,
+      vehicle.fuelType,
+      vehicle.status,
+      vehicle.remarks,
+      vehicle.staffMember
+    );
+    dispatch(saveVehicle(newVehicle));
+    dispatch(closeModal());
+    resetForm();
+    dispatch(getAllVehicles());
+  };
+
+  const handleUpdateVehicle = () => {
+    if (
+      !vehicle.licensePlateNumber ||
+      !vehicle.category ||
+      !vehicle.fuelType ||
+      !vehicle.status ||
+      !vehicle.remarks ||
+      !vehicle.staffMember
+    ) {
+      alert("All Fields are required!");
+      return;
+    }
+
+    const updatedVehicle = new VehicleModel(
+      vehicle.licensePlateNumber,
+      vehicle.category,
+      vehicle.fuelType,
+      vehicle.status,
+      vehicle.remarks,
+      vehicle.staffMember
+    );
+
+    dispatch(updateVehicle({ vehicle.licensePlateNumber, vehicle: updatedVehicle }));
+    dispatch(closeModal());
+    resetForm();
+    dispatch(getAllVehicles());
+  };
+
+  const handleDelete = (licensePlateNumber: string) => {
+    if (window.confirm("Are you sure want to delete this Vehicle")) {
+      dispatch(deleteVehicle(licensePlateNumber));
+      dispatch(getAllVehicles());
+    }
+  }
+  const resetForm = () => {
+    setVehicle(initialVehicleState);
+  };
 
   const handleAddVehicle = () => {
     dispatch(openModal());

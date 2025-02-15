@@ -10,12 +10,20 @@ import { motion } from "motion/react";
 import { easeIn } from "motion";
 import { FuelType } from "../models/enums/FuelType";
 import { Status } from "../models/enums/StatusType";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VehicleModel } from "../models/Vehicle";
-import { deleteVehicle, getAllVehicles, saveVehicle, updateVehicle } from "../reducers/VehicleReducer";
+import {
+  deleteVehicle,
+  getAllVehicles,
+  saveVehicle,
+  updateVehicle,
+} from "../reducers/VehicleReducer";
+import { AppDispatch } from "../store/Store";
+import { StaffModel } from "../models/Staff";
+import { getStaffNames } from "../reducers/staffReducer";
 
 export function Vehicle() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
   const vehicles = useSelector((state) => state.vehicle);
   const staffMembers = useSelector((state) => state.staff);
@@ -80,7 +88,12 @@ export function Vehicle() {
       vehicle.staffMember
     );
 
-    dispatch(updateVehicle({ vehicle.licensePlateNumber, vehicle: updatedVehicle }));
+    dispatch(
+      updateVehicle({
+        licenseNumber: vehicle.licensePlateNumber,
+        vehicle: updatedVehicle,
+      })
+    );
     dispatch(closeModal());
     resetForm();
     dispatch(getAllVehicles());
@@ -91,7 +104,13 @@ export function Vehicle() {
       dispatch(deleteVehicle(licensePlateNumber));
       dispatch(getAllVehicles());
     }
-  }
+  };
+
+  const handleEdit = (vehicle: VehicleModel) => {
+    dispatch(openModal());
+    setVehicle(vehicle);
+  };
+
   const resetForm = () => {
     setVehicle(initialVehicleState);
   };
@@ -109,6 +128,11 @@ export function Vehicle() {
     console.log("Vehicle added!");
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    dispatch(getStaffNames());
+    dispatch(getAllVehicles());
+  },[dispatch, vehicles, staffMembers])
   return (
     <>
       <motion.h1
@@ -165,116 +189,41 @@ export function Vehicle() {
             </tr>
           </thead>
           <tbody className="bg-slate-100 cursor-pointer">
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">XYZ-002</td>
-              <td className="px-6 py-4">Truck</td>
-              <td className="px-6 py-4">Diesel</td>
-              <td className="px-6 py-4">Available</td>
-              <td className="px-6 py-4">Assigned to Kamal</td>
-              <td className="px-6 py-4">Kamal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">XYZ-002</td>
-              <td className="px-6 py-4">Truck</td>
-              <td className="px-6 py-4">Diesel</td>
-              <td className="px-6 py-4">Available</td>
-              <td className="px-6 py-4">Assigned to Kamal</td>
-              <td className="px-6 py-4">Kamal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">XYZ-002</td>
-              <td className="px-6 py-4">Truck</td>
-              <td className="px-6 py-4">Diesel</td>
-              <td className="px-6 py-4">Available</td>
-              <td className="px-6 py-4">Assigned to Kamal</td>
-              <td className="px-6 py-4">Kamal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">XYZ-002</td>
-              <td className="px-6 py-4">Truck</td>
-              <td className="px-6 py-4">Diesel</td>
-              <td className="px-6 py-4">Available</td>
-              <td className="px-6 py-4">Assigned to Kamal</td>
-              <td className="px-6 py-4">Kamal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">XYZ-002</td>
-              <td className="px-6 py-4">Truck</td>
-              <td className="px-6 py-4">Diesel</td>
-              <td className="px-6 py-4">Available</td>
-              <td className="px-6 py-4">Assigned to Kamal</td>
-              <td className="px-6 py-4">Kamal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
+            {vehicles
+              .filter(
+                (vehicle: VehicleModel, index, self) =>
+                  index ===
+                  self.findIndex(
+                    (v: VehicleModel) =>
+                      v.licensePlateNumber === v.licensePlateNumber
+                  )
+              )
+              .map((vehicle: VehicleModel) => (
+                <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
+                  <td className="px-6 py-4">{vehicle.licensePlateNumber}</td>
+                  <td className="px-6 py-4">{vehicle.category}</td>
+                  <td className="px-6 py-4">{vehicle.fuelType}</td>
+                  <td className="px-6 py-4">{vehicle.status}</td>
+                  <td className="px-6 py-4">{vehicle.remarks}</td>
+                  <td className="px-6 py-4">{vehicle.staffMember}</td>
+                  <td className="px-6 py-4">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline"
+                      onClick={() => handleEdit(vehicle)}
+                    >
+                      Edit
+                    </a>
+                    <a
+                      href="#"
+                      className="font-medium text-red-600 hover:underline ml-2"
+                      onClick={() => handleDelete(vehicle.licensePlateNumber)}
+                    >
+                      Remove
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </motion.div>
@@ -285,51 +234,98 @@ export function Vehicle() {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label>License Plate Number</label>
-            <input type="text" required />
+            <input
+              type="text"
+              value={vehicle.licensePlateNumber}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, licensePlateNumber: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Vehicle Category</label>
-            <select name="" id="">
-              <option value="" selected>
-                Select Vehicle Category
-              </option>
-              <option value="CAR">Car</option>
-              <option value="VAN">Van</option>
-              <option value="TRUCK">Truck</option>
-            </select>
+            <input
+              type="text"
+              value={vehicle.category}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, category: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Fuel Type</label>
-            <select name="" id="">
+            <select
+              name="fuelType"
+              value={vehicle.fuelType}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, fuelType: e.target.value as FuelType })
+              }
+              id=""
+            >
               <option value="" selected>
                 Select Fuel Type
               </option>
-              <option value="DIESEL">Diesel</option>
-              <option value="PETROL">Petrol</option>
-              <option value="ELECTRIC">Electric</option>
+              <option value={FuelType.DIESEL}>Diesel</option>
+              <option value={FuelType.PETROL}>Petrol</option>
+              <option value={FuelType.ELECTRIC}>Electric</option>
             </select>
           </div>
           <div className="mb-4">
             <label>Vehicle Status</label>
-            <select name="" id="">
+            <select
+              name="status"
+              value={vehicle.status}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, status: e.target.value as Status })
+              }
+              id=""
+            >
               <option value="" selected>
                 Select Vehicle Status
               </option>
-              <option value="AVAILABLE">Available</option>
-              <option value="UNAVAILABLE">Unavailable</option>
+              <option value={Status.AVAILABLE}>Available</option>
+              <option value={Status.UNAVAILABLE}>Unavailable</option>
             </select>
           </div>
           <div className="mb-4">
-            <label>Relevant Staff Member</label>
-            <select name="" id=""></select>
+            <label>Remarks</label>
+            <textarea
+              name="remarks"
+              value={vehicle.remarks}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, remarks: e.target.value })
+              }
+              id=""
+              rows={3}
+            ></textarea>
           </div>
           <div className="mb-4">
-            <label>Remarks</label>
-            <textarea name="" id="" rows={3}></textarea>
+            <label>Relevant Staff Member</label>
+            <select
+              name="staffMember"
+              value={vehicle.staffMember}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, staffMember: e.target.value })
+              }
+              id=""
+            >
+              <option value="">Select Staff Member</option>
+              {staffMembers.map((staff: StaffModel, index) => (
+                <option key={index} value={staff}>
+                  {staff}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex justify-end">
-            <Savebutton>Save Vehicle</Savebutton>
-            <Updatebutton>Update Vehicle</Updatebutton>
+            <Savebutton handleClick={handleAddNewVehicle}>
+              Save Vehicle
+            </Savebutton>
+            <Updatebutton handleClick={handleUpdateVehicle}>
+              Update Vehicle
+            </Updatebutton>
           </div>
         </form>
       </Modal>

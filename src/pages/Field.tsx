@@ -14,6 +14,9 @@ import { getAllFields, saveField } from "../reducers/FieldReducer";
 import { FieldModel } from "../models/Field";
 
 export function Field() {
+
+   const url = "http://localhost:3000"   
+
   const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
   const fields = useSelector((state) => state.field);
@@ -22,6 +25,8 @@ export function Field() {
   const [fieldName, setFieldName] = useState("");
   const [location, setLocation] = useState("");
   const [extentSize, setExtentSize] = useState(0);
+
+ 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFieldImage(e.target.files ? e.target.files[0] : null);
@@ -130,7 +135,7 @@ export function Field() {
                 >
                   <td className="px-6 py-4">
                     <img
-                      src={field.fieldImage}
+                      src={`${url}/images/${field.fieldImage}`}
                       alt={field.fieldName}
                       className="w-24 h-24 rounded-full"
                     />

@@ -4,6 +4,7 @@ import FieldReducer from "../reducers/FieldReducer";
 import StaffReducer from "../reducers/staffReducer";
 import EquipmentReducer from "../reducers/EquipmentReducer";
 import VehicleReducer from "../reducers/VehicleReducer";
+import CropReducer from "../reducers/CropReducer";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     staff: StaffReducer,
     equipment: EquipmentReducer,
     vehicle: VehicleReducer,
+    crop: CropReducer,
   },
 });
 

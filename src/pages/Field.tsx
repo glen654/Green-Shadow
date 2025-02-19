@@ -17,6 +17,7 @@ import {
   updateField,
 } from "../reducers/FieldReducer";
 import { FieldModel } from "../models/Field";
+import Swal from "sweetalert2";
 
 export function Field() {
   const url = "http://localhost:3000";
@@ -55,6 +56,12 @@ export function Field() {
     dispatch(saveField(fieldData));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Field Saved!",
+      text: "Your Field data has been successfully saved.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllFields());
   };
 
@@ -74,14 +81,32 @@ export function Field() {
     dispatch(updateField({ fieldName: field.fieldName, field: fieldData }));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Field Updated!",
+      text: "Your Field data has been successfully updated.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllFields());
   };
 
   const handleDelete = (fieldName: string) => {
-    if (window.confirm("Are you sure want to delete this field")) {
-      dispatch(deleteField(fieldName));
-      dispatch(getAllFields());
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteField(fieldName));
+        dispatch(getAllFields());
+        Swal.fire("Deleted!", "The Field has been deleted.", "success");
+      }
+    });
   };
 
   const handleEdit = (field: FieldModel) => {

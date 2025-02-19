@@ -11,10 +11,16 @@ import { easeIn } from "motion";
 import { AppDispatch } from "../store/Store";
 import { useEffect, useState } from "react";
 import { StaffModel } from "../models/Staff";
-import { deleteStaff, getAllStaff, saveStaff, updateStaff } from "../reducers/staffReducer";
+import {
+  deleteStaff,
+  getAllStaff,
+  saveStaff,
+  updateStaff,
+} from "../reducers/staffReducer";
 import { Gender } from "../models/enums/GenderType";
 import { getFieldNames } from "../reducers/FieldReducer";
 import { FieldModel } from "../models/Field";
+import Swal from "sweetalert2";
 
 export function Staff() {
   const dispatch = useDispatch<AppDispatch>();
@@ -68,6 +74,13 @@ export function Staff() {
     );
     dispatch(saveStaff(newStaffMember));
     resetForm();
+    dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Staff Member Saved!",
+      text: "Your Staff data has been successfully saved.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllStaff());
   };
 
@@ -105,15 +118,33 @@ export function Staff() {
     dispatch(updateStaff({ name: staff.name, staff: updatedStaffMember }));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Staff Member Updated!",
+      text: "Your Staff Member data has been successfully updated.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllStaff());
   };
 
   const handleDelete = (name: string) => {
-    if(window.confirm("Are you sure want to delete this staff memeber")){
-      dispatch(deleteStaff(name));
-      dispatch(getAllStaff());
-    }
-  }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteStaff(name));
+        dispatch(getAllStaff());
+        Swal.fire("Deleted!", "The Staff Member has been deleted.", "success");
+      }
+    });
+  };
 
   const resetForm = () => {
     setStaff(initialStaffState);

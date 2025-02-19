@@ -23,6 +23,7 @@ import { getCropNames } from "../reducers/CropReducer";
 import { getStaffNames } from "../reducers/staffReducer";
 import { CropModel } from "../models/Crop";
 import { StaffModel } from "../models/Staff";
+import Swal from "sweetalert2";
 
 export function Log() {
   const url = "http://localhost:3000";
@@ -69,6 +70,12 @@ export function Log() {
     dispatch(saveLog(logData));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Log Saved!",
+      text: "Your Log data has been successfully saved.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllLogs());
   };
 
@@ -96,14 +103,32 @@ export function Log() {
     dispatch(updateLog({ logName: log.logName, log: logData }));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Log Updated!",
+      text: "Your Log data has been successfully Updated.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllLogs());
   };
 
   const handleDelete = (logName: string) => {
-    if (window.confirm("Are you sure want to delete this log")) {
-      dispatch(deleteLog(logName));
-      dispatch(getAllLogs());
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteLog(logName));
+        dispatch(getAllLogs());
+        Swal.fire("Deleted!", "The Log has been deleted.", "success");
+      }
+    });
   };
 
   const handleEdit = (log: LogModel) => {

@@ -21,6 +21,7 @@ import {
 import { AppDispatch } from "../store/Store";
 import { StaffModel } from "../models/Staff";
 import { getStaffNames } from "../reducers/staffReducer";
+import Swal from "sweetalert2";
 
 export function Vehicle() {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,8 +62,14 @@ export function Vehicle() {
       vehicle.staffMember
     );
     dispatch(saveVehicle(newVehicle));
-    dispatch(closeModal());
     resetForm();
+    dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Vehicle Saved!",
+      text: "Your Vehicle data has been successfully saved.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllVehicles());
   };
 
@@ -94,16 +101,34 @@ export function Vehicle() {
         vehicle: updatedVehicle,
       })
     );
-    dispatch(closeModal());
     resetForm();
+    dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Vehicle Updated!",
+      text: "Your Vehicle data has been successfully updated.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllVehicles());
   };
 
   const handleDelete = (licensePlateNumber: string) => {
-    if (window.confirm("Are you sure want to delete this Vehicle")) {
-      dispatch(deleteVehicle(licensePlateNumber));
-      dispatch(getAllVehicles());
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteVehicle(licensePlateNumber));
+        dispatch(getAllVehicles());
+        Swal.fire("Deleted!", "The Vehicle has been deleted.", "success");
+      }
+    });
   };
 
   const handleEdit = (vehicle: VehicleModel) => {
@@ -132,7 +157,7 @@ export function Vehicle() {
   useEffect(() => {
     dispatch(getStaffNames());
     dispatch(getAllVehicles());
-  },[dispatch, vehicles, staffMembers])
+  }, [dispatch, vehicles, staffMembers]);
   return (
     <>
       <motion.h1

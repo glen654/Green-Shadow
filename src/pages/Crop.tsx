@@ -19,6 +19,7 @@ import {
   updateCrop,
 } from "../reducers/CropReducer";
 import { getFieldNames } from "../reducers/FieldReducer";
+import Swal from "sweetalert2";
 
 export function Crop() {
   const url = "http://localhost:3000";
@@ -60,6 +61,12 @@ export function Crop() {
     dispatch(saveCrop(cropData));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Crop Saved!",
+      text: "Your crop data has been successfully saved.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllCrops());
   };
 
@@ -85,14 +92,32 @@ export function Crop() {
     dispatch(updateCrop({ commonName: crop.commonName, crop: cropData }));
     resetForm();
     dispatch(closeModal());
+    Swal.fire({
+      icon: "success",
+      title: "Crop Updated!",
+      text: "Your crop data has been successfully updated.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllCrops());
   };
 
   const handleDelete = (commonName: string) => {
-    if (window.confirm("Are you sure want to delete this crop")) {
-      dispatch(deleteCrop(commonName));
-      dispatch(getAllCrops());
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteCrop(commonName));
+        dispatch(getAllCrops());
+        Swal.fire("Deleted!", "The crop has been deleted.", "success");
+      }
+    });
   };
 
   const handleEdit = (crop: CropModel) => {

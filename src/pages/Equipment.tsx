@@ -23,6 +23,7 @@ import { FieldModel } from "../models/Field";
 import { StaffModel } from "../models/Staff";
 import { getFieldNames } from "../reducers/FieldReducer";
 import { getStaffNames } from "../reducers/staffReducer";
+import Swal from "sweetalert2";
 
 export function Equipment() {
   const dispatch = useDispatch<AppDispatch>();
@@ -64,6 +65,12 @@ export function Equipment() {
     dispatch(saveEquipment(newEquipment));
     dispatch(closeModal());
     resetForm();
+    Swal.fire({
+      icon: "success",
+      title: "Equipment Saved!",
+      text: "Your Equipment data has been successfully saved.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllEquipment());
   };
 
@@ -95,14 +102,32 @@ export function Equipment() {
     );
     dispatch(closeModal());
     resetForm();
+    Swal.fire({
+      icon: "success",
+      title: "Equipment Updated!",
+      text: "Your Equipment data has been successfully updated.",
+      confirmButtonText: "Ok",
+    });
     dispatch(getAllEquipment());
   };
 
   const handleDelete = (equipName: string) => {
-    if (window.confirm("Are you sure want to delete this Equipment")) {
-      dispatch(deleteEquipment(equipName));
-      dispatch(getAllEquipment());
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteEquipment(equipName));
+        dispatch(getAllEquipment());
+        Swal.fire("Deleted!", "The Equipment has been deleted.", "success");
+      }
+    });
   };
   const resetForm = () => {
     setEquipment(initialEquipState);

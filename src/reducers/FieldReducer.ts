@@ -58,9 +58,18 @@ export const updateField = createAsyncThunk(
   "field/updateField",
   async (payload: { fieldName: string; field: FieldModel }) => {
     try {
+      const formData = new FormData();
+
+      formData.append("fieldName", payload.field.fieldName);
+      formData.append("location", payload.field.location);
+      formData.append("extentSize", String(payload.field.extentSize));
+      if (payload.field.fieldImage instanceof File) {
+        formData.append("fieldImage", payload.field.fieldImage);
+      }
+
       const response = await api.put(
         `/update/${payload.fieldName}`,
-        payload.field
+        formData
       );
       return response.data;
     } catch (error) {

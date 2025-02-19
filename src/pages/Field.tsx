@@ -10,51 +10,89 @@ import { motion } from "motion/react";
 import { easeIn } from "motion";
 import { AppDispatch } from "../store/Store";
 import { useEffect, useState } from "react";
-import { getAllFields, saveField } from "../reducers/FieldReducer";
+import {
+  deleteField,
+  getAllFields,
+  saveField,
+  updateField,
+} from "../reducers/FieldReducer";
 import { FieldModel } from "../models/Field";
 
 export function Field() {
-
-   const url = "http://localhost:3000"   
+  const url = "http://localhost:3000";
 
   const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
   const fields = useSelector((state) => state.field);
 
-  const [fieldImage, setFieldImage] = useState<File | null>(null);
-  const [fieldName, setFieldName] = useState("");
-  const [location, setLocation] = useState("");
-  const [extentSize, setExtentSize] = useState(0);
-
- 
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFieldImage(e.target.files ? e.target.files[0] : null);
+  const initialFieldState = {
+    fieldName: "",
+    location: "",
+    extentSize: 0,
+    fieldImage: null,
   };
 
+  const [field, setField] = useState<FieldModel>(initialFieldState);
+
   const handleAdd = () => {
-    if (!fieldImage || !fieldName || !location || !extentSize) {
+    if (
+      !field.fieldImage ||
+      !field.fieldName ||
+      !field.location ||
+      !field.extentSize
+    ) {
       alert("All Fields are required!");
       return;
     }
 
     const fieldData = new FieldModel(
-      fieldName,
-      location,
-      extentSize,
-      fieldImage
+      field.fieldName,
+      field.location,
+      field.extentSize,
+      field.fieldImage
     );
 
     dispatch(saveField(fieldData));
+    resetForm();
+    dispatch(closeModal());
+    dispatch(getAllFields());
+  };
+
+  const handleUpdate = () => {
+    if (!field.fieldName || !field.location || !field.extentSize) {
+      alert("All Fields are required!");
+      return;
+    }
+
+    const fieldData = new FieldModel(
+      field.fieldName,
+      field.location,
+      field.extentSize,
+      field.fieldImage
+    );
+
+    dispatch(updateField({ fieldName: field.fieldName, field: fieldData }));
+    resetForm();
+    dispatch(closeModal());
+    dispatch(getAllFields());
+  };
+
+  const handleDelete = (fieldName: string) => {
+    if (window.confirm("Are you sure want to delete this field")) {
+      dispatch(deleteField(fieldName));
+      dispatch(getAllFields());
+    }
   };
 
   const handleEdit = (field: FieldModel) => {
     dispatch(openModal());
-    setFieldName(field.fieldName);
-    setLocation(field.location);
-    setExtentSize(field.extentSize);
-    setFieldImage(field.fieldImage);
+    setField(field);
   };
+
+  const resetForm = () => {
+    setField(initialFieldState);
+  };
+
   const handleAddField = () => {
     dispatch(openModal());
   };
@@ -71,7 +109,7 @@ export function Field() {
 
   useEffect(() => {
     dispatch(getAllFields());
-  }, [dispatch]);
+  }, [dispatch, fields]);
   return (
     <>
       <motion.h1
@@ -135,7 +173,7 @@ export function Field() {
                 >
                   <td className="px-6 py-4">
                     <img
-                      src={`${url}/images/${field.fieldImage}`}
+                      src={`${url}${field.fieldImage}`}
                       alt={field.fieldName}
                       className="w-24 h-24 rounded-full"
                     />
@@ -154,6 +192,7 @@ export function Field() {
                     <a
                       href="#"
                       className="font-medium text-red-600 hover:underline ml-2"
+                      onClick={() => handleDelete(field.fieldName)}
                     >
                       Remove
                     </a>
@@ -169,15 +208,26 @@ export function Field() {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label>Field Image</label>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setField({
+                  ...field,
+                  fieldImage: e.target.files ? e.target.files[0] : null,
+                })
+              }
+            />
           </div>
           <div className="mb-4">
             <label>Field Name</label>
             <input
               type="text"
               name="fieldName"
-              value={fieldName}
-              onChange={(e) => setFieldName(e.target.value)}
+              value={field.fieldName}
+              onChange={(e) =>
+                setField({ ...field, fieldName: e.target.value })
+              }
               required
             />
           </div>
@@ -186,8 +236,8 @@ export function Field() {
             <input
               type="text"
               name="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              value={field.location}
+              onChange={(e) => setField({ ...field, location: e.target.value })}
               required
             />
           </div>
@@ -196,14 +246,16 @@ export function Field() {
             <input
               type="text"
               name="extentSize"
-              value={extentSize}
-              onChange={(e) => setExtentSize(Number(e.target.value))}
+              value={field.extentSize}
+              onChange={(e) =>
+                setField({ ...field, extentSize: Number(e.target.value) })
+              }
               required
             />
           </div>
           <div className="flex justify-end">
             <Savebutton handleClick={handleAdd}>Save Field</Savebutton>
-            <Updatebutton>Update Field</Updatebutton>
+            <Updatebutton handleClick={handleUpdate}>Update Field</Updatebutton>
           </div>
         </form>
       </Modal>

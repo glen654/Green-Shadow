@@ -9,10 +9,111 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../reducers/ModalSlice";
 import { motion } from "motion/react";
 import { easeIn } from "motion";
+import { AppDispatch } from "../store/Store";
+import { useEffect, useState } from "react";
+import { LogModel } from "../models/Log";
+import {
+  deleteLog,
+  getAllLogs,
+  saveLog,
+  updateLog,
+} from "../reducers/LogReducer";
+import { getFieldNames } from "../reducers/FieldReducer";
+import { getCropNames } from "../reducers/CropReducer";
+import { getStaffNames } from "../reducers/staffReducer";
+import { CropModel } from "../models/Crop";
+import { StaffModel } from "../models/Staff";
 
 export function Log() {
-  const dispatch = useDispatch();
+  const url = "http://localhost:3000";
+  const dispatch = useDispatch<AppDispatch>();
   const isModalOpen = useSelector((state) => state.modal.isModalOpen);
+  const logs = useSelector((state) => state.log);
+  const fields = useSelector((state) => state.field);
+  const staffMembers = useSelector((state) => state.staff);
+  const crops = useSelector((state) => state.crop);
+
+  const initialLogState = {
+    logName: "",
+    logDate: new Date(),
+    logImage: null,
+    fieldName: "",
+    cropName: "",
+    staffMember: "",
+  };
+
+  const [log, setLog] = useState<LogModel>(initialLogState);
+
+  const handleAdd = () => {
+    if (
+      !log.logName ||
+      !log.logDate ||
+      !log.logImage ||
+      !log.fieldName ||
+      !log.cropName ||
+      !log.staffMember
+    ) {
+      alert("All fields are required");
+      return;
+    }
+
+    const logData = new LogModel(
+      log.logName,
+      log.logDate,
+      log.logImage,
+      log.fieldName,
+      log.cropName,
+      log.staffMember
+    );
+
+    dispatch(saveLog(logData));
+    resetForm();
+    dispatch(closeModal());
+    dispatch(getAllLogs());
+  };
+
+  const handleUpdate = () => {
+    if (
+      !log.logName ||
+      !log.logDate ||
+      !log.fieldName ||
+      !log.cropName ||
+      !log.staffMember
+    ) {
+      alert("All fields are required");
+      return;
+    }
+
+    const logData = new LogModel(
+      log.logName,
+      log.logDate,
+      log.logImage,
+      log.fieldName,
+      log.cropName,
+      log.staffMember
+    );
+
+    dispatch(updateLog({ logName: log.logName, log: logData }));
+    resetForm();
+    dispatch(closeModal());
+    dispatch(getAllLogs());
+  };
+
+  const handleDelete = (logName: string) => {
+    if (window.confirm("Are you sure want to delete this log")) {
+      dispatch(deleteLog(logName));
+      dispatch(getAllLogs());
+    }
+  };
+
+  const handleEdit = (log: LogModel) => {
+    dispatch(openModal());
+    setLog(log);
+  };
+
+  const resetForm = () => {
+    setLog(initialLogState);
+  };
 
   const handleAddLog = () => {
     dispatch(openModal());
@@ -27,6 +128,13 @@ export function Log() {
     console.log("Log added!");
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    dispatch(getAllLogs());
+    dispatch(getFieldNames());
+    dispatch(getCropNames());
+    dispatch(getStaffNames());
+  }, [dispatch, logs, fields, crops, staffMembers]);
   return (
     <>
       <motion.h1
@@ -61,10 +169,10 @@ export function Log() {
             <tr>
               <th scope="col" className="px-6 py-3"></th>
               <th scope="col" className="px-6 py-3">
-                Log Date
+                Log Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Log Details
+                Log Date
               </th>
               <th scope="col" className="px-6 py-3">
                 Relevant Field
@@ -81,78 +189,49 @@ export function Log() {
             </tr>
           </thead>
           <tbody className="bg-slate-100 cursor-pointer">
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">
-                <img src={field} alt="" className="w-24 h-24 rounded-full" />
-              </td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">Banana Crop</td>
-              <td className="px-6 py-4">Field 1</td>
-              <td className="px-6 py-4">Crop 1</td>
-              <td className="px-6 py-4">Nimal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
+            {logs
+              .filter(
+                (log: LogModel, index, self) =>
+                  index ===
+                  self.findIndex((l: LogModel) => l.logName === log.logName)
+              )
+              .map((log: LogModel) => (
+                <tr
+                  key={log.logName}
+                  className="hover:bg-slate-200 border-b border-gray-950 font-bold"
                 >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">
-                <img src={field} alt="" className="w-24 h-24 rounded-full" />
-              </td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">Banana Crop</td>
-              <td className="px-6 py-4">Field 1</td>
-              <td className="px-6 py-4">Crop 1</td>
-              <td className="px-6 py-4">Nimal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
-            <tr className="hover:bg-slate-200 border-b border-gray-950 font-bold">
-              <td className="px-6 py-4">
-                <img src={field} alt="" className="w-24 h-24 rounded-full" />
-              </td>
-              <td className="px-6 py-4">2025-01-10</td>
-              <td className="px-6 py-4">Banana Crop</td>
-              <td className="px-6 py-4">Field 1</td>
-              <td className="px-6 py-4">Crop 1</td>
-              <td className="px-6 py-4">Nimal Perera</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-red-600 hover:underline ml-2"
-                >
-                  Remove
-                </a>
-              </td>
-            </tr>
+                  <td className="px-6 py-4">
+                    <img
+                      src={`${url}${log.logImage}`}
+                      alt={log.logName}
+                      className="w-24 h-24 rounded-full"
+                    />
+                  </td>
+                  <td className="px-6 py-4">{log.logName}</td>
+                  <td className="px-6 py-4">
+                    {new Date(log.logDate).toLocaleDateString("en-GB")}
+                  </td>
+                  <td className="px-6 py-4">{log.fieldName}</td>
+                  <td className="px-6 py-4">{log.cropName}</td>
+                  <td className="px-6 py-4">{log.staffMember}</td>
+                  <td className="px-6 py-4">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline"
+                      onClick={() => handleEdit(log)}
+                    >
+                      Edit
+                    </a>
+                    <a
+                      href="#"
+                      className="font-medium text-red-600 hover:underline ml-2"
+                      onClick={() => handleDelete(log.logName)}
+                    >
+                      Remove
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </motion.div>
@@ -163,31 +242,90 @@ export function Log() {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label>Observed Image</label>
-            <input type="file" accept="image/*" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setLog({
+                  ...log,
+                  logImage: e.target.files ? e.target.files[0] : null,
+                })
+              }
+            />
+          </div>
+          <div className="mb-4">
+            <label>Log Name</label>
+            <input
+              type="text"
+              name="logName"
+              value={log.logName}
+              onChange={(e) => setLog({ ...log, logName: e.target.value })}
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Log Date</label>
-            <input type="date" required />
-          </div>
-          <div className="mb-4">
-            <label>Log Details</label>
-            <textarea name="" id="" rows={3}></textarea>
+            <input
+              type="date"
+              name="logDate"
+              value={log.logDate.toISOString()}
+              onChange={(e) =>
+                setLog({ ...log, logDate: new Date(e.target.value) })
+              }
+              required
+            />
           </div>
           <div className="mb-4">
             <label>Relevant Field</label>
-            <select name="" id=""></select>
+            <select
+              name="fieldName"
+              value={log.fieldName}
+              onChange={(e) => setLog({ ...log, fieldName: e.target.value })}
+              id=""
+            >
+              <option value="">Select Field</option>
+              {fields.map((field: FieldModel, index) => (
+                <option key={index} value={field}>
+                  {field}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label>Relevant Crop</label>
-            <select name="" id=""></select>
+            <select
+              name="cropName"
+              value={log.cropName}
+              onChange={(e) => setLog({ ...log, cropName: e.target.value })}
+              id=""
+            >
+              <option value="">Select Crop</option>
+              {crops.map((crop: CropModel, index) => (
+                <option key={index} value={crop}>
+                  {crop}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label>Relevant Staff Member</label>
-            <select name="" id=""></select>
+            <select
+              name=""
+              value={log.staffMember}
+              onChange={(e) => setLog({ ...log, staffMember: e.target.value })}
+              id=""
+            >
+              <option value="">Select Staff Member</option>
+              {staffMembers.map((staff: StaffModel, index) => (
+                <option key={index} value={staff}>
+                  {staff}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex justify-end">
-            <Savebutton>Save Log</Savebutton>
-            <Updatebutton>Update Log</Updatebutton>
+            <Savebutton handleClick={handleAdd}>Save Log</Savebutton>
+            <Updatebutton handleClick={handleUpdate}>Update Log</Updatebutton>
           </div>
         </form>
       </Modal>

@@ -1,7 +1,7 @@
 export class LogModel {
   logName: string;
   logDate: Date;
-  logImage: string;
+  logImage: File | null;
   fieldName: string;
   cropName: string;
   staffMember: string;
@@ -9,7 +9,7 @@ export class LogModel {
   constructor(
     logName: string,
     logDate: Date,
-    logImage: string,
+    logImage: File |null,
     fieldName: string,
     cropName: string,
     staffMember: string

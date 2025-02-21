@@ -10,12 +10,21 @@ import {
   FaTruck,
   FaPowerOff,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store/Store";
+import { logOutUser } from "../../reducers/UserReducer";
 
 export function Navbar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const handleSignOut = () => {
-    navigate("/");
+    if(isAuthenticated){
+      dispatch(logOutUser());
+      navigate("/");
+    }
+    
   };
   return (
     <div className="flex">
@@ -78,6 +87,7 @@ export function Navbar() {
           <button
             onClick={handleSignOut}
             className="flex items-center gap-2 w-full p-2 bg-white text-green-500 rounded-md hover:bg-gray-200"
+            
           >
             <FaPowerOff className="h-5 w-5" />
             <span>Sign Out</span>

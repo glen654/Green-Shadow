@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { HeaderImage } from "../components/HeaderImage";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/Store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../models/User";
 import { registerUser } from "../reducers/UserReducer";
 import Swal from "sweetalert2";
@@ -12,7 +12,8 @@ import Swal from "sweetalert2";
 export function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const auth = useSelector((state) => state.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const [loginFailed, setLoginFailed] = useState(false);
 
   const initialUserState = {
     userName: "",
@@ -29,22 +30,35 @@ export function Register() {
     }
     const newUser = new User(user.userName, user.userEmail, user.password);
     dispatch(registerUser(newUser));
-    navigate("/dashboard");
-    Swal.fire({
-      icon: "success",
-      title: "You have successfully registerd!",
-      text: `Welcome to Green Shadow User ${user.userName}`,
-      confirmButtonText: "Ok",
-    });
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
+    setLoginFailed(false);
+    handleRegisterUser();
   };
 
   const handleToggle = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+      Swal.fire({
+        icon: "success",
+        title: "You have successfully Registered!",
+        text: `Welcome again to Green Shadow ${user.userName}`,
+        confirmButtonText: "Ok",
+      });
+    } else if (loginFailed) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Register Failed Please Try again!",
+      });
+    }
+  }, [isAuthenticated, loginFailed]);
   return (
     <div>
       <HeaderImage />

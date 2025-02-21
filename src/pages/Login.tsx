@@ -4,7 +4,7 @@ import { HeaderImage } from "../components/HeaderImage";
 import { Togglepage } from "../components/Togglepage";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/Store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginUser } from "../reducers/UserReducer";
 import { User } from "../models/User";
 import Swal from "sweetalert2";
@@ -12,13 +12,14 @@ import Swal from "sweetalert2";
 export function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const auth = useSelector((state) => state.user);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const [loginFailed, setLoginFailed] = useState(false);
 
   const initialUserSate = {
     userName: "",
     userEmail: "",
-    password: ""
-  }
+    password: "",
+  };
 
   const [user, setUser] = useState(initialUserSate);
 
@@ -29,22 +30,35 @@ export function Login() {
     }
     const newUser = new User(user.userName, user.userEmail, user.password);
     dispatch(loginUser(newUser));
-    navigate("/dashboard");
-        Swal.fire({
-          icon: "success",
-          title: "You have successfully Logged In!",
-          text: `Welcome again to Green Shadow User ${user.userName}`,
-          confirmButtonText: "Ok",
-        });
-  }
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoginFailed(false);
+    handleUserLogin();
   };
 
   const handleToggle = () => {
     navigate("/register");
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+      Swal.fire({
+        icon: "success",
+        title: "You have successfully Logged In!",
+        text: `Welcome again to Green Shadow ${user.userName}`,
+        confirmButtonText: "Ok",
+      });
+    } else if (loginFailed) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Login Failed Please Try again!",
+      });
+    }
+  }, [isAuthenticated, loginFailed]);
   return (
     <div>
       <HeaderImage />

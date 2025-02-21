@@ -6,6 +6,7 @@ import EquipmentReducer from "../reducers/EquipmentReducer";
 import VehicleReducer from "../reducers/VehicleReducer";
 import CropReducer from "../reducers/CropReducer";
 import LogReducer from "../reducers/LogReducer";
+import UserReducer from "../reducers/UserReducer";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     vehicle: VehicleReducer,
     crop: CropReducer,
     log: LogReducer,
+    user: UserReducer,
   },
 });
 

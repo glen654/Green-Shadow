@@ -2,14 +2,44 @@ import { useNavigate } from "react-router";
 import { AuthButton } from "../components/AuthButton";
 import { HeaderImage } from "../components/HeaderImage";
 import { Togglepage } from "../components/Togglepage";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../store/Store";
+import { useState } from "react";
+import { loginUser } from "../reducers/UserReducer";
+import { User } from "../models/User";
+import Swal from "sweetalert2";
 
 export function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const auth = useSelector((state) => state.user);
+
+  const initialUserSate = {
+    userName: "",
+    userEmail: "",
+    password: ""
+  }
+
+  const [user, setUser] = useState(initialUserSate);
+
+  const handleUserLogin = () => {
+    if (!user.userEmail || !user.password) {
+      alert("All fields are required");
+      return;
+    }
+    const newUser = new User(user.userName, user.userEmail, user.password);
+    dispatch(loginUser(newUser));
+    navigate("/dashboard");
+        Swal.fire({
+          icon: "success",
+          title: "You have successfully Logged In!",
+          text: `Welcome again to Green Shadow User ${user.userName}`,
+          confirmButtonText: "Ok",
+        });
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Logged in!");
-    navigate("/dashboard");
   };
 
   const handleToggle = () => {
@@ -27,6 +57,19 @@ export function Login() {
             Green Shadow Login
           </h3>
         </div>
+        <div>
+          <label className="text-gray-800 text-xs block mb-2">UserName</label>
+          <div className="relative flex items-center">
+            <input
+              name="username"
+              type="text"
+              value={user.userName}
+              onChange={(e) => setUser({ ...user, userName: e.target.value })}
+              className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none"
+              placeholder="Enter username"
+            />
+          </div>
+        </div>
 
         <div>
           <label className="text-gray-800 text-xs block mb-2">Email</label>
@@ -34,6 +77,8 @@ export function Login() {
             <input
               name="email"
               type="email"
+              value={user.userEmail}
+              onChange={(e) => setUser({ ...user, userEmail: e.target.value })}
               className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-green-500 pl-2 pr-8 py-3 outline-none"
               placeholder="Enter email"
             />
@@ -46,6 +91,8 @@ export function Login() {
             <input
               name="password"
               type="password"
+              value={user.password}
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
               className="w-full bg-transparent text-sm text-gray-800 border-b border-gray-300 focus:border-green-500 pl-2 pr-8 py-3 outline-none"
               placeholder="Enter password"
             />
@@ -53,7 +100,7 @@ export function Login() {
         </div>
 
         <div className="mt-8">
-          <AuthButton>Login</AuthButton>
+          <AuthButton handleClick={handleUserLogin}>Login</AuthButton>
           <Togglepage onClick={handleToggle}>Register Here</Togglepage>
         </div>
       </form>

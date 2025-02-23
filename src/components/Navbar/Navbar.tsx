@@ -20,11 +20,10 @@ export function Navbar() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const handleSignOut = () => {
-    if(isAuthenticated){
+    if (isAuthenticated) {
       dispatch(logOutUser());
       navigate("/");
     }
-    
   };
   return (
     <div className="flex">
@@ -87,7 +86,6 @@ export function Navbar() {
           <button
             onClick={handleSignOut}
             className="flex items-center gap-2 w-full p-2 bg-white text-green-500 rounded-md hover:bg-gray-200"
-            
           >
             <FaPowerOff className="h-5 w-5" />
             <span>Sign Out</span>

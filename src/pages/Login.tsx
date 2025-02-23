@@ -29,7 +29,22 @@ export function Login() {
       return;
     }
     const newUser = new User(user.userName, user.userEmail, user.password);
-    dispatch(loginUser(newUser));
+    dispatch(loginUser(newUser)).then(() => {
+      resetForm();
+      Swal.fire({
+        icon: "success",
+        title: "You have successfully Logged In!",
+        text: `Welcome to Green Shadow${user.userName}`,
+        confirmButtonText: "Ok",
+      });
+      navigate("/dashboard");
+    });
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Login Failed Please Try again!",
+    });
+    navigate("/");
   };
 
   const handleLogin = (e) => {
@@ -38,27 +53,31 @@ export function Login() {
     handleUserLogin();
   };
 
+  const resetForm = () => {
+    setUser(initialUserSate);
+  };
+
   const handleToggle = () => {
     navigate("/register");
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard");
-      Swal.fire({
-        icon: "success",
-        title: "You have successfully Logged In!",
-        text: `Welcome again to Green Shadow ${user.userName}`,
-        confirmButtonText: "Ok",
-      });
-    } else if (loginFailed) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Login Failed Please Try again!",
-      });
-    }
-  }, [isAuthenticated, loginFailed]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/dashboard");
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "You have successfully Logged In!",
+  //       text: `Welcome again to Green Shadow ${user.userName}`,
+  //       confirmButtonText: "Ok",
+  //     });
+  //   } else if (loginFailed) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "Login Failed Please Try again!",
+  //     });
+  //   }
+  // }, [isAuthenticated, loginFailed]);
   return (
     <div>
       <HeaderImage />
@@ -86,7 +105,7 @@ export function Login() {
         </div>
 
         <div>
-          <label className="text-gray-800 text-xs block mb-2">Email</label>
+          <label className="text-gray-800 text-xs block mb-2 mt-4">Email</label>
           <div className="relative flex items-center">
             <input
               name="email"

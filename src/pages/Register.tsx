@@ -2,9 +2,9 @@ import { AuthButton } from "../components/AuthButton";
 import { Togglepage } from "../components/Togglepage";
 import { useNavigate } from "react-router";
 import { HeaderImage } from "../components/HeaderImage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/Store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "../models/User";
 import { registerUser } from "../reducers/UserReducer";
 import Swal from "sweetalert2";
@@ -12,8 +12,7 @@ import Swal from "sweetalert2";
 export function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [registerFailed, setRegisterFailed] = useState(false);
 
   const initialUserState = {
     userName: "",
@@ -29,12 +28,26 @@ export function Register() {
       return;
     }
     const newUser = new User(user.userName, user.userEmail, user.password);
-    dispatch(registerUser(newUser));
+    dispatch(registerUser(newUser)).then(() => {
+      resetForm();
+      Swal.fire({
+        icon: "success",
+        title: "You have successfully Registered!",
+        text: `${user.userName} Please enter your credentials to login`,
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    });
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Register Failed Please Try again!",
+    });
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
-    setLoginFailed(false);
+    setRegisterFailed(false);
     handleRegisterUser();
   };
 
@@ -42,23 +55,9 @@ export function Register() {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard");
-      Swal.fire({
-        icon: "success",
-        title: "You have successfully Registered!",
-        text: `Welcome again to Green Shadow ${user.userName}`,
-        confirmButtonText: "Ok",
-      });
-    } else if (loginFailed) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Register Failed Please Try again!",
-      });
-    }
-  }, [isAuthenticated, loginFailed]);
+  const resetForm = () => {
+    setUser(initialUserState);
+  };
   return (
     <div>
       <HeaderImage />
@@ -86,7 +85,7 @@ export function Register() {
         </div>
 
         <div>
-          <label className="text-gray-800 text-xs block mb-2">Email</label>
+          <label className="text-gray-800 text-xs block mb-2 mt-4">Email</label>
           <div className="relative flex items-center">
             <input
               name="email"

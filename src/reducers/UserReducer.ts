@@ -3,8 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../services/ApiService";
 
 const initialState = {
-  jwt_token: null,
-  refresh_token: null,
+  access_token: null,
   username: null,
   isAuthenticated: false,
   loading: false,
@@ -15,11 +14,9 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (user: User) => {
     try {
-      const response = await api.post(
-        "/auth/register",
-        { user },
-        { withCredentials: true }
-      );
+      const response = await api.post("/auth/register", user, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (err) {
       console.log(err);
@@ -29,11 +26,9 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk("user/login", async (user: User) => {
   try {
-    const response = await api.post(
-      "/auth/login",
-      { user },
-      { withCredentials: true }
-    );
+    const response = await api.post("/auth/login", user, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (err) {
     console.log(err);
@@ -46,10 +41,8 @@ const userSlice = createSlice({
   reducers: {
     logOutUser(state) {
       state.isAuthenticated = false;
-      state.jwt_token = null;
-      state.refresh_token = null;
-      localStorage.removeItem("jwt_token");
-      localStorage.removeItem("refresh_token");
+      state.access_token = null;
+      localStorage.removeItem("access_token");
     },
   },
   extraReducers(builder) {
@@ -58,11 +51,7 @@ const userSlice = createSlice({
         state.isAuthenticated = false;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.jwt_token = action.payload.accessToken;
-        state.refresh_token = action.payload.refreshToken;
-        state.isAuthenticated = true;
-        localStorage.setItem("jwt_token", action.payload.accessToken);
-        localStorage.setItem("refresh_token", action.payload.refreshToken);
+        console.log("User registerd successfully");
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -74,11 +63,9 @@ const userSlice = createSlice({
         state.isAuthenticated = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.jwt_token = action.payload.accessToken;
-        state.refresh_token = action.payload.refreshToken;
+        state.access_token = action.payload.access_token;
         state.isAuthenticated = true;
-        localStorage.setItem("jwt_token", action.payload.accessToken);
-        localStorage.setItem("refresh_token", action.payload.refreshToken);
+        localStorage.setItem("access_token", action.payload.access_token);
       })
       .addCase(loginUser.pending, (state, action) => {
         state.isAuthenticated = false;

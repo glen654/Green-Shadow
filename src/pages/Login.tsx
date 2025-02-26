@@ -34,15 +34,10 @@ export function Login() {
       Swal.fire({
         icon: "success",
         title: "You have successfully Logged In!",
-        text: `Welcome to Green Shadow${user.userName}`,
+        text: `Welcome to Green Shadow ${user.userName}`,
         confirmButtonText: "Ok",
       });
       navigate("/dashboard");
-    });
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Login Failed Please Try again!",
     });
     navigate("/");
   };
@@ -60,24 +55,6 @@ export function Login() {
   const handleToggle = () => {
     navigate("/register");
   };
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate("/dashboard");
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "You have successfully Logged In!",
-  //       text: `Welcome again to Green Shadow ${user.userName}`,
-  //       confirmButtonText: "Ok",
-  //     });
-  //   } else if (loginFailed) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "Login Failed Please Try again!",
-  //     });
-  //   }
-  // }, [isAuthenticated, loginFailed]);
   return (
     <div>
       <HeaderImage />
